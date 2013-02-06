@@ -1,11 +1,5 @@
 /*
-MultiWiiCopter by Alexandre Dubus
-www.multiwii.com
-July  2012     V2.1
- This program is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version. see <http://www.gnu.org/licenses/>
+	本程序给予MWC飞控2.1，为自由软件，使用GPL V3授权协议，你可以协议下修改和发布代码。
 */
 
 #include <avr/io.h>
@@ -575,7 +569,7 @@ void setup() {
   f.SMALL_ANGLES_25=1; // important for gyro only conf
 }
 
-// ******** Main Loop *********
+// ******** Main Loop 主循环*********
 void loop () {
   static uint8_t rcDelayCommand; // this indicates the number of time (multiple of RC measurement at 50Hz) the sticks must be maintained to run or switch off motors
   uint8_t axis,i;
@@ -967,7 +961,8 @@ void loop () {
   #endif
 
 
-  //**** PITCH & ROLL & YAW PID ****    
+  //**** PITCH & ROLL & YAW PID **** 
+  //**** 俯仰、滚转和偏航的PID算法
   for(axis=0;axis<3;axis++) {
     if (f.ACC_MODE && axis<2 ) { //LEVEL MODE
       // 50 degrees max inclination

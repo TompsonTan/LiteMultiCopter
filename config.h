@@ -1,29 +1,28 @@
 /*************************************************************************************************/
-/****           CONFIGURABLE PARAMETERS                                                       ****/
+/****           CONFIGURABLE PARAMETERS  可配置的参数                                                     ****/
 /*************************************************************************************************/
-
-/* this file consists of several sections
- * to create a working combination you must at least make your choices in section 1.
- * 1 - BASIC SETUP - you must select an option in every block.
- *      this assumes you have 4 channels connected to your board with standard ESCs and servos.
- * 2 - COPTER TYPE SPECIFIC OPTIONS - you likely want to check for options for your copter type
- * 3 - RC SYSTEM SETUP
- * 4 - ALTERNATE CPUs & BOARDS - if you have
- * 5 - ALTERNATE SETUP - select alternate RX (SBUS, PPM, etc.), alternate ESC-range, etc. here
- * 6 - OPTIONAL FEATURES - enable nice to have features here (LCD, telemetry, battery monitor etc.)
- * 7 - TUNING & DEVELOPER - if you know what you are doing; you have been warned
- */
-
+/*
+	该文件包含了几个部分
+	为了使飞控正常工作，你至少应该对第一部分进行配置。
+	1 - 基本设置 - 你必须对每个内容（block）的选项进行选择。
+		这里假设你使用接收机的4个通道连接到控制板，并使用“标准的”电调（ESCs）和舵机。
+	2 - 多轴飞行器的类型设定选项 - 这里用来设定你的是3轴、6轴还是4轴之类的。
+	3 - RC 遥控接收系统的设置。
+	4 - 其它类型的CPU和开发板（如果你有的画）。
+	5 - 其它设置 - 选择其它类型的“信号收发方式”(SBUS, PPM, etc.)，或其它的电调行程。
+	6 - 可供选择的功能 - 比如LCD显示器，遥测，电池电量监控。
+	7 - 微调和开发 - 警告：这部分要小心，要清楚在干什么才去修改！
+*/
 
 
 
 /*************************************************************************************************/
 /*****************                                                                 ***************/
-/****************  SECTION  1 - BASIC SETUP                                                *******/
+/****************  SECTION  1 - BASIC SETUP      基本设置                                  *******/
 /*****************                                                                 ***************/
 /*************************************************************************************************/
 
-  /**************************    The type of multicopter    ****************************/
+  /*********************    The type of multicopter   多轴飞行器的类型    ****************/
     //#define GIMBAL
     //#define BI
     //#define TRI
@@ -44,7 +43,7 @@
     //#define HELI_120_CCPM
     //#define HELI_90_DEG
 
-  /****************************    Motor minthrottle    *******************************/
+  /*****************    Motor minthrottle    电机的最小“输入电流”（油门）   ********************/
     /* Set the minimum throttle command sent to the ESC (Electronic Speed Controller)
        This is the minimum value that allow motors to run at a idle speed  */
     //#define MINTHROTTLE 1300 // for Turnigy Plush ESCs 10A
@@ -123,7 +122,7 @@
       //#define FLYDUINO_MPU
       //#define CRIUS_AIO_PRO_V1
       
-    /***************************    independent sensors    ********************************/
+    /*******************    independent sensors    独立传感器    *************************/
       /* leave it commented if you already checked a specific board above */
       /* I2C gyroscope */
       //#define WMP
@@ -286,7 +285,7 @@
 
 /*************************************************************************************************/
 /*****************                                                                 ***************/
-/****************  SECTION  3 - RC SYSTEM SETUP                                            *******/
+/****************  SECTION  3 - RC SYSTEM SETUP 遥控接收系统的设置                         *******/
 /*****************                                                                 ***************/
 /*************************************************************************************************/
 
@@ -460,7 +459,7 @@
 
 /*************************************************************************************************/
 /*****************                                                                 ***************/
-/****************  SECTION  6 - OPTIONAL FEATURES                                          *******/
+/****************  SECTION  6 - OPTIONAL FEATURES        可供选择的功能                    *******/
 /*****************                                                                 ***************/
 /*************************************************************************************************/
 
@@ -487,7 +486,7 @@
     /* I2C DFRobot LED RING communication */
     //#define LED_RING
 
-  /********************************    LED FLASHER    ***********************************/
+  /****************************   LED FLASHER   LED闪灯   ******************************/
     //#define LED_FLASHER
     //#define LED_FLASHER_DDR DDRB
     //#define LED_FLASHER_PORT PORTB
@@ -499,7 +498,7 @@
     //#define LED_FLASHER_SEQUENCE_MAX 0xFF
 
 
-  /*******************************    Landing lights    *********************************/
+  /***********************    Landing lights    着陆灯   **************************/
   /* Landing lights
      Use an output pin to control landing lights.
      They can be switched automatically when used in conjunction
@@ -523,7 +522,7 @@
 
 
   /**************************************************************************************/
-  /***********************                  TX-related         **************************/
+  /***********************        TX-related   发射机相关      **************************/
   /**************************************************************************************/
 
     /* introduce a deadband around the stick center
@@ -595,6 +594,7 @@
 
   /**************************************************************************************/
   /***********************        LCD/OLED - display settings       *********************/
+  /***********************           LCD/OLED - 显示器设置          *********************/
   /**************************************************************************************/
 
     /* uncomment this line if you plan to use a LCD or OLED */
@@ -607,7 +607,7 @@
       /* uncomment to suppress some unwanted aux3 aux4 items in config menu (only useful if LCD_CONF_AUX is enabled) */
       //#define SUPPRESS_LCD_CONF_AUX34
 
-    /*****************************   The type of LCD     **********************************/
+    /*******************   The type of LCD     LCD的类型   ***********************/
       /* choice of LCD attached for configuration and telemetry, see notes below */
       //#define LCD_SERIAL3W    // Alex' initial variant with 3 wires, using rx-pin for transmission @9600 baud fixed
       //#define LCD_TEXTSTAR    // SERIAL LCD: Cat's Whisker LCD_TEXTSTAR Module CW-LCD-02 (Which has 4 input keys for selecting menus)
@@ -707,7 +707,7 @@
 	//#define ARMEDTIMEWARNING 330  // Trigger an alarm after a certain time of being armed [s] to save you lipo (if your TX does not have a countdown)
 
   /********************************************************************/
-  /****           battery voltage monitoring                       ****/
+  /****      battery voltage monitoring   电池电压监控             ****/
   /********************************************************************/
     /* for V BAT monitoring
        after the resistor divisor we should get [0V;5V]->[0;1023] on analog V_BATPIN
@@ -724,6 +724,7 @@
 
   /********************************************************************/
   /****           powermeter (battery capacity monitoring)         ****/
+  /****                  电量计 （用于电池电量监控）               ****/
   /********************************************************************/
 
     /* enable monitoring of the power consumption from battery (think of mAh)
@@ -776,7 +777,7 @@
 
 /*************************************************************************************************/
 /*****************                                                                 ***************/
-/****************  SECTION  7 - TUNING & DEVELOPER                                  **************/
+/****************  SECTION  7 - TUNING & DEVELOPER      微调和开发                  **************/
 /*****************                                                                 ***************/
 /*************************************************************************************************/
 
@@ -786,7 +787,7 @@
     //#define EXT_MOTOR_RANGE
 
   /**************************************************************************************/
-  /***********************     motor, servo and other presets     ***********************/
+  /******     motor, servo and other presets      电机、舵机和其它设置项        *********/
   /**************************************************************************************/
     /* motors will not spin when the throttle command is in low position
        this is an alternative method to stop immediately the motors */
@@ -795,7 +796,7 @@
     /* some radios have not a neutral point centered on 1500. can be changed here */
     #define MIDRC 1500
 
-  /***********************         Servo Refreshrates            ***********************/
+  /********************      Servo Refreshrates   舵机 刷新率？   ***********************/
     /* Default 50Hz Servo refresh rate*/
     #define SERVO_RFR_50HZ
 
@@ -862,7 +863,7 @@
 
 
   /********************************************************************/
-  /****           ESCs calibration                                 ****/
+  /****           ESCs calibration       电调校正                  ****/
   /********************************************************************/
 
     /* to calibrate all ESCs connected to MWii at the same time (useful to avoid unplugging/re-plugging each ESC)
