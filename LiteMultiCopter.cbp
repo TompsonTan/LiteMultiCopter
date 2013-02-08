@@ -23,7 +23,7 @@
 					<Add directory="$(ARDUINO_DIR)/include" />
 				</Compiler>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)/ardusim" />
+					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\ardusim" />
 				</Environment>
 			</Target>
 			<Target title="Simulator - Release">
@@ -43,7 +43,7 @@
 					<Add directory="$(ARDUINO_DIR)/include" />
 				</Compiler>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)/ardusim" />
+					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\ardusim" />
 				</Environment>
 			</Target>
 			<Target title="Arduino Uno">
@@ -67,7 +67,7 @@
 					<Add after="avr-size --mcu=$(MCU) --format=avr $(TARGET_OUTPUT_FILE)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\arduino" />
 					<Variable name="BOARD" value="Arduino Uno" />
 					<Variable name="BOARD_INDEX" value="1" />
 					<Variable name="MCU" value="atmega328p" />
@@ -98,7 +98,7 @@
 					<Add after="avr-size --mcu=$(MCU) --format=avr $(TARGET_OUTPUT_FILE)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\arduino" />
 					<Variable name="BOARD" value="Arduino Leonardo" />
 					<Variable name="BOARD_INDEX" value="2" />
 					<Variable name="MCU" value="atmega32u4" />
@@ -129,7 +129,7 @@
 					<Add after="avr-size --mcu=$(MCU) --format=avr $(TARGET_OUTPUT_FILE)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\arduino" />
 					<Variable name="BOARD" value="Arduino Esplora" />
 					<Variable name="BOARD_INDEX" value="3" />
 					<Variable name="MCU" value="atmega32u4" />
@@ -160,7 +160,7 @@
 					<Add after="avr-size --mcu=$(MCU) --format=avr $(TARGET_OUTPUT_FILE)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\arduino" />
 					<Variable name="BOARD" value="Arduino Micro" />
 					<Variable name="BOARD_INDEX" value="4" />
 					<Variable name="MCU" value="atmega32u4" />
@@ -189,7 +189,7 @@
 					<Add after="avr-size --mcu=$(MCU) --format=avr $(TARGET_OUTPUT_FILE)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\arduino" />
 					<Variable name="BOARD" value="Arduino Duemilanove (328)" />
 					<Variable name="BOARD_INDEX" value="5" />
 					<Variable name="MCU" value="atmega328p" />
@@ -218,7 +218,7 @@
 					<Add after="avr-size --mcu=$(MCU) --format=avr $(TARGET_OUTPUT_FILE)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\arduino" />
 					<Variable name="BOARD" value="Arduino Duemilanove (168)" />
 					<Variable name="BOARD_INDEX" value="6" />
 					<Variable name="MCU" value="atmega168" />
@@ -247,7 +247,7 @@
 					<Add after="avr-size --mcu=$(MCU) --format=avr $(TARGET_OUTPUT_FILE)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\arduino" />
 					<Variable name="BOARD" value="Arduino Nano (328)" />
 					<Variable name="BOARD_INDEX" value="7" />
 					<Variable name="MCU" value="atmega328p" />
@@ -276,7 +276,7 @@
 					<Add after="avr-size --mcu=$(MCU) --format=avr $(TARGET_OUTPUT_FILE)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\arduino" />
 					<Variable name="BOARD" value="Arduino Nano (168)" />
 					<Variable name="BOARD_INDEX" value="8" />
 					<Variable name="MCU" value="atmega168" />
@@ -305,7 +305,7 @@
 					<Add after="avr-size --mcu=$(MCU) --format=avr $(TARGET_OUTPUT_FILE)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\arduino" />
 					<Variable name="BOARD" value="Arduino Mini (328)" />
 					<Variable name="BOARD_INDEX" value="9" />
 					<Variable name="MCU" value="atmega328p" />
@@ -334,7 +334,7 @@
 					<Add after="avr-size --mcu=$(MCU) --format=avr $(TARGET_OUTPUT_FILE)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\arduino" />
 					<Variable name="BOARD" value="Arduino Mini (168)" />
 					<Variable name="BOARD_INDEX" value="10" />
 					<Variable name="MCU" value="atmega168" />
@@ -363,7 +363,7 @@
 					<Add after="avr-size --mcu=$(MCU) --format=avr $(TARGET_OUTPUT_FILE)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\arduino" />
 					<Variable name="BOARD" value="Arduino Pro Mini (328)" />
 					<Variable name="BOARD_INDEX" value="11" />
 					<Variable name="MCU" value="atmega328p" />
@@ -392,7 +392,7 @@
 					<Add after="avr-size --mcu=$(MCU) --format=avr $(TARGET_OUTPUT_FILE)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\arduino" />
 					<Variable name="BOARD" value="Arduino Pro Mini (168)" />
 					<Variable name="BOARD_INDEX" value="12" />
 					<Variable name="MCU" value="atmega168" />
@@ -421,8 +421,8 @@
 					<Add after="avr-size --mcu=$(MCU) --format=avr $(TARGET_OUTPUT_FILE)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)/arduino" />
-					<Variable name="BOARD" value="Arduino Mega 2560/ADK" />
+					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\arduino" />
+					<Variable name="BOARD" value="Arduino Mega 2560\ADK" />
 					<Variable name="BOARD_INDEX" value="13" />
 					<Variable name="MCU" value="atmega2560" />
 					<Variable name="UPLOAD_BAUDRATE" value="57600" />
@@ -450,7 +450,7 @@
 					<Add after="avr-size --mcu=$(MCU) --format=avr $(TARGET_OUTPUT_FILE)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\arduino" />
 					<Variable name="BOARD" value="Arduino Mega 1280" />
 					<Variable name="BOARD_INDEX" value="14" />
 					<Variable name="MCU" value="atmega1280" />
@@ -479,7 +479,7 @@
 					<Add after="avr-size --mcu=$(MCU) --format=avr $(TARGET_OUTPUT_FILE)" />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)/arduino" />
+					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\arduino" />
 					<Variable name="BOARD" value="Arduino Mega 8" />
 					<Variable name="BOARD_INDEX" value="15" />
 					<Variable name="MCU" value="atmega8" />
@@ -493,6 +493,51 @@
 			<Add option="-Wall" />
 			<Add directory="." />
 		</Compiler>
+		<Unit filename="EEPROM.cpp">
+			<Option target="Simulator - Debug" />
+			<Option target="Simulator - Release" />
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="IMU.cpp">
+			<Option target="Simulator - Debug" />
+			<Option target="Simulator - Release" />
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="LCD.cpp">
+			<Option target="Simulator - Debug" />
+			<Option target="Simulator - Release" />
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="LED.cpp">
+			<Option target="Simulator - Debug" />
+			<Option target="Simulator - Release" />
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="MultiWii_2_1.cpp">
+			<Option target="Simulator - Debug" />
+			<Option target="Simulator - Release" />
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="Output.cpp">
+			<Option target="Simulator - Debug" />
+			<Option target="Simulator - Release" />
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="RX.cpp">
+			<Option target="Simulator - Debug" />
+			<Option target="Simulator - Release" />
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="Sensors.cpp">
+			<Option target="Simulator - Debug" />
+			<Option target="Simulator - Release" />
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="Serial.cpp">
+			<Option target="Simulator - Debug" />
+			<Option target="Simulator - Release" />
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
 		<Unit filename="cores/CDC.cpp" />
 		<Unit filename="cores/HID.cpp" />
 		<Unit filename="cores/HardwareSerial.cpp" />
@@ -524,11 +569,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="include/config.h">
-			<Option target="Simulator - Debug" />
-			<Option target="Simulator - Release" />
+			<Option target="Arduino Mega 2560/ADK" />
 		</Unit>
 		<Unit filename="include/libraries.cpp" />
-		<Unit filename="sketch.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
