@@ -13,4 +13,4 @@
 #define USE_STEPPER 0
 #define USE_TINYGPS 0
 #define USE_WIFI 0
-#define USE_WIRE 0
+#define USE_WIRE 1

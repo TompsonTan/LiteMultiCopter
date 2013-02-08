@@ -493,51 +493,9 @@
 			<Add option="-Wall" />
 			<Add directory="." />
 		</Compiler>
-		<Unit filename="EEPROM.cpp">
-			<Option target="Simulator - Debug" />
-			<Option target="Simulator - Release" />
-			<Option target="Arduino Mega 2560/ADK" />
-		</Unit>
-		<Unit filename="IMU.cpp">
-			<Option target="Simulator - Debug" />
-			<Option target="Simulator - Release" />
-			<Option target="Arduino Mega 2560/ADK" />
-		</Unit>
-		<Unit filename="LCD.cpp">
-			<Option target="Simulator - Debug" />
-			<Option target="Simulator - Release" />
-			<Option target="Arduino Mega 2560/ADK" />
-		</Unit>
-		<Unit filename="LED.cpp">
-			<Option target="Simulator - Debug" />
-			<Option target="Simulator - Release" />
-			<Option target="Arduino Mega 2560/ADK" />
-		</Unit>
-		<Unit filename="MultiWii_2_1.cpp">
-			<Option target="Simulator - Debug" />
-			<Option target="Simulator - Release" />
-			<Option target="Arduino Mega 2560/ADK" />
-		</Unit>
-		<Unit filename="Output.cpp">
-			<Option target="Simulator - Debug" />
-			<Option target="Simulator - Release" />
-			<Option target="Arduino Mega 2560/ADK" />
-		</Unit>
-		<Unit filename="RX.cpp">
-			<Option target="Simulator - Debug" />
-			<Option target="Simulator - Release" />
-			<Option target="Arduino Mega 2560/ADK" />
-		</Unit>
-		<Unit filename="Sensors.cpp">
-			<Option target="Simulator - Debug" />
-			<Option target="Simulator - Release" />
-			<Option target="Arduino Mega 2560/ADK" />
-		</Unit>
-		<Unit filename="Serial.cpp">
-			<Option target="Simulator - Debug" />
-			<Option target="Simulator - Release" />
-			<Option target="Arduino Mega 2560/ADK" />
-		</Unit>
+		<Unit filename="LiteMultiCopter.cpp" />
+		<Unit filename="MPU6050.cpp" />
+		<Unit filename="MPU6050.h" />
 		<Unit filename="cores/CDC.cpp" />
 		<Unit filename="cores/HID.cpp" />
 		<Unit filename="cores/HardwareSerial.cpp" />
