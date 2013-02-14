@@ -496,6 +496,10 @@
 		<Unit filename="LiteMultiCopter.cpp" />
 		<Unit filename="MPU6050.cpp" />
 		<Unit filename="MPU6050.h" />
+		<Unit filename="Receiver.cpp" />
+		<Unit filename="Receiver.h" />
+		<Unit filename="SerialCom.cpp" />
+		<Unit filename="SerialCom.h" />
 		<Unit filename="cores/CDC.cpp" />
 		<Unit filename="cores/HID.cpp" />
 		<Unit filename="cores/HardwareSerial.cpp" />

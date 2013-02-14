@@ -3,12 +3,24 @@
 
 #include"MPU6050.h"
 #include"SerialCom.h"
+#include"Receiver.h"
 
 //加速度/陀螺仪传感器
 MPU6050 MySensor;
 
 //串口通信
 SerialCom MyCom;
+
+//接收机信号读取
+Receiver MyReceiver;
+
+//中断服务函数，用来检测接收机信号
+/*当发现接收机通道电平变化时，会中断当前的“进程”，
+执行中断服务函数，读取接收机的信号，完成任务后返回*/
+SIGNAL(PCINT2_vect)
+{
+    MyReceiver.MegaPcIntISR();
+}
 
 void setup()
 {
@@ -20,6 +32,9 @@ void setup()
 
     //初始化MPU6050
     MySensor.Init();
+
+    //设置接收机信号端口
+    MyReceiver.Init();
 }
 
 void loop()
@@ -29,5 +44,5 @@ void loop()
     //将陀螺仪数据发送到串口
     MyCom.SensorDataToPC(MySensor);
 
-    delay(100);
+    delay(1000);
 }

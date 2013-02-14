@@ -35,8 +35,8 @@ Tzs:
 	MPU6050.h//传感器数据读取
 	MPU6050.cpp
 	
-	RX.h//信号从接收机到Arduino板的读取
-	RX.cpp
+	Receiver.h//信号从接收机到Arduino板的读取
+	Receiver.cpp
 		
 LX:
 	PID.h//飞控PID稳定和控制算法，决定四轴性能！

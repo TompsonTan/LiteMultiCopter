@@ -9,7 +9,8 @@
 //AVR（Arduino的芯片）将字节低位（Low Byte）储存在地址低位（lower address）。
 //而MPU6050则相反，因此要将读出的数据高地位对换。
 
-typedef union accel_t_gyro_union
+//不要随便更改下面的AccGyo，因为读取数据是一次性读取的，各个参数的内存地址要“紧密相连”
+union AccGyo
 {
   struct
   {
@@ -59,7 +60,7 @@ public:
     float ReadTemperature();
 
 private:
-    accel_t_gyro_union accel_t_gyro;
+    AccGyo accel_t_gyro;
     int Read(int start, uint8_t *buffer, int size);
     int Write(int start, const uint8_t *pData, int size);
     int WriteRegister(int reg, uint8_t data);
