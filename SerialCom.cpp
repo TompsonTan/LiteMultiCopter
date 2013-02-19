@@ -39,3 +39,22 @@ void SerialCom::SensorDataToPC(MPU6050 Sensor)
     Serial.print(F(", "));
     Serial.println(F(""));
 }
+
+void SerialCom::ReceiverDataToPC(Receiver MyReceiver)
+{
+//    Serial.print(F("axis 0: "));
+//    Serial.print(MyReceiver.receiverCommand[0]);
+//    Serial.println(F(""));
+//
+//    Serial.print(F("axis 1: "));
+//    Serial.print(MyReceiver.receiverCommand[1]);
+//    Serial.println(F(""));
+//
+//    Serial.print(F("axis 2: "));
+//    Serial.print(MyReceiver.receiverCommand[2]);
+//    Serial.println(F(""));
+
+    Serial.print(F("Throttle: "));
+    Serial.print(MyReceiver.receiverCommand[3]);
+    Serial.println(F(""));
+}

@@ -23,15 +23,6 @@ void Receiver::Init()
     receiverCommand[YAXIS] = 1500;
     receiverCommand[ZAXIS] = 1500;
     receiverCommand[THROTTLE] = 1000;
-
-    for (byte channel = XAXIS; channel < lastReceiverChannel; channel++)
-    {
-        receiverSlope[channel] = 1;
-    }
-    for (byte channel = XAXIS; channel < lastReceiverChannel; channel++)
-    {
-        receiverOffset[channel] = 1;
-    }
 }
 
 
@@ -39,23 +30,18 @@ void Receiver::Init()
 状态寄存器不由硬件处理,要由用户软件来完成。
 就是说要由软件来压入堆栈*/
 
+
 void Receiver::ReadData()
 {
-    for(byte channel = XAXIS; channel < lastReceiverChannel; channel++)
+    for(byte channel = XAXIS; channel < 4; channel++)
     {
         // 接收机信号校正/微调
-        receiverData[channel] = (receiverSlope[channel] * getRawChannelValue(channel)) + receiverOffset[channel];
+        receiverData[channel] = getRawChannelValue(channel);
     }
 
-    // Reduce receiver commands using receiverXmitFactor and center around 1500
-    for (byte channel = XAXIS; channel < THROTTLE; channel++)
+    for (byte channel = XAXIS; channel < 4; channel++)
     {
-        receiverCommand[channel] = ((receiverData[channel] - receiverZero[channel]) * receiverXmitFactor) + receiverZero[channel];
-    }
-    // No xmitFactor reduction applied for throttle, mode and AUX
-    for (byte channel = THROTTLE; channel < lastReceiverChannel; channel++)
-    {
-        receiverCommand[channel] =receiverData[channel];
+        receiverCommand[channel] = receiverData[channel];
     }
 }
 
@@ -68,7 +54,7 @@ void Receiver::MegaPcIntISR()
   uint32_t currentTime;
   uint32_t time;
 
-  curr = *portInputRegister(11);
+  curr = PINK;
   mask = curr ^ PCintLast[0];
   PCintLast[0] = curr;
 
@@ -77,6 +63,7 @@ void Receiver::MegaPcIntISR()
     return;
   }
 
+//获取自系统启动后的时间，这里得到的是微秒us（microseconds），而不是毫秒（millisecond）
   currentTime = micros();
 
   //mask标记了电平发生了变化的引脚
@@ -107,7 +94,7 @@ void Receiver::MegaPcIntISR()
 
 int Receiver::getRawChannelValue(byte channel)
 {
-  byte pin = receiverPin[channel];
+  byte pin = channel;
   uint8_t oldSREG = SREG;
   cli();
   // Get receiver value read by pin change interrupt handler

@@ -40,9 +40,14 @@ void setup()
 void loop()
 {
     //读取陀螺仪数据
-    MySensor.ReadData();
+    //MySensor.ReadData();
     //将陀螺仪数据发送到串口
-    MyCom.SensorDataToPC(MySensor);
+    //MyCom.SensorDataToPC(MySensor);
 
-    delay(1000);
+    //读取接收机信号
+    MyReceiver.ReadData();
+    //将接收机信号发送到串口
+    MyCom.ReceiverDataToPC(MyReceiver);
+
+    delay(250);
 }

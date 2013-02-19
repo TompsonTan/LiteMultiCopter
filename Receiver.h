@@ -29,17 +29,10 @@
 #define ZAXIS 2
 #define THROTTLE 3
 
-    int lastReceiverChannel = 0;
 
-    float receiverXmitFactor = 0.0;
-    int receiverData[ChannelNumber] = {0,0,0,0};
-    int receiverZero[3] = {0,0,0};
-    int receiverCommand[ChannelNumber] = {0,0,0,0};
-    float receiverSlope[ChannelNumber] = {0.0,0.0,0.0,0.0};
-    float receiverOffset[ChannelNumber] = {0.0,0.0,0.0,0.0};
 
   // arduino pins 67, 65, 64, 66, 63, 62
-  static byte receiverPin[4] = {0,1,2,3}; // bit number of PORTK used for XAXIS, YAXIS, ZAXIS, THROTTLE
+//byte receiverPin[4] = {0,1,2,3}; // bit number of PORTK used for XAXIS, YAXIS, ZAXIS, THROTTLE
 
 //通道的数据
 typedef struct {
@@ -48,9 +41,7 @@ typedef struct {
   unsigned long fallTime;
   unsigned int lastGoodWidth;
 } tPinTimingData;
-volatile static tPinTimingData pinData[9];
 
-volatile static uint8_t PCintLast[3];
 
 //这里要用到ISR中断服务函数来读取接收机的数据
 class Receiver
@@ -61,6 +52,13 @@ public:
     void ReadData();
     void MegaPcIntISR();
     int getRawChannelValue(byte channel);
+
+    int receiverData[ChannelNumber];
+    int receiverCommand[ChannelNumber];
+
+    tPinTimingData pinData[9];
+
+    uint8_t PCintLast[3];
 };
 
 
