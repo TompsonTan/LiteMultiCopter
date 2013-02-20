@@ -3,6 +3,7 @@
 
 Receiver::Receiver()
 {
+
 }
 
 void Receiver::Init()
@@ -19,10 +20,10 @@ void Receiver::Init()
     //注意：四通道，但开启了6个“引脚电平变化中断”
     PCICR |= 0x1 << 2;
 
-    receiverCommand[XAXIS] = 1500;
-    receiverCommand[YAXIS] = 1500;
-    receiverCommand[ZAXIS] = 1500;
-    receiverCommand[THROTTLE] = 1000;
+    ChannelData[XAXIS] = 1500;
+    ChannelData[YAXIS] = 1500;
+    ChannelData[ZAXIS] = 1500;
+    ChannelData[THROTTLE] = 1000;
 }
 
 
@@ -36,70 +37,71 @@ void Receiver::ReadData()
     for(byte channel = XAXIS; channel < 4; channel++)
     {
         // 接收机信号校正/微调
-        receiverData[channel] = getRawChannelValue(channel);
-    }
-
-    for (byte channel = XAXIS; channel < 4; channel++)
-    {
-        receiverCommand[channel] = receiverData[channel];
+        ChannelData[channel] = getRawChannelValue(channel);
     }
 }
 
 void Receiver::MegaPcIntISR()
 {
-  uint8_t bit;
-  uint8_t curr;
-  uint8_t mask;
-  uint8_t pin;
-  uint32_t currentTime;
-  uint32_t time;
+    uint8_t bit;
+    uint8_t curr;
+    uint8_t mask;
+    uint8_t pin;
+    uint32_t currentTime;
+    uint32_t time;
 
-  curr = PINK;
-  mask = curr ^ PCintLast[0];
-  PCintLast[0] = curr;
+    curr = PINK;
+    mask = curr ^ PCintLast[0];
+    PCintLast[0] = curr;
 
-  // mask is pins that have changed. screen out non pcint pins.
-  if ((mask &= PCMSK2) == 0) {
-    return;
-  }
-
-//获取自系统启动后的时间，这里得到的是微秒us（microseconds），而不是毫秒（millisecond）
-  currentTime = micros();
-
-  //mask标记了电平发生了变化的引脚
-  for (uint8_t i=0; i < 8; i++) {
-    bit = 0x01 << i;
-    if (bit & mask) {
-      pin = i;
-      // for each pin changed, record time of change
-      if (bit & PCintLast[0]) {
-        time = currentTime - pinData[pin].fallTime;
-        pinData[pin].riseTime = currentTime;
-        if ((time >= MINOFFWIDTH) && (time <= MAXOFFWIDTH))
-          pinData[pin].edge = RISING_EDGE;
-        else
-          pinData[pin].edge = FALLING_EDGE; //检测到无效的上升沿
-      }
-      else {
-        time = currentTime - pinData[pin].riseTime;
-        pinData[pin].fallTime = currentTime;
-        if ((time >= MINONWIDTH) && (time <= MAXONWIDTH) && (pinData[pin].edge == RISING_EDGE)) {
-          pinData[pin].lastGoodWidth = time;//占空时间
-          pinData[pin].edge = FALLING_EDGE;
-        }
-      }
+    //mask 标记了哪些引脚的的电平发生了变化，
+    //如果没有变化，则直接返回。
+    if ((mask &= PCMSK2) == 0)
+    {
+        return;
     }
-  }
+
+    //获取自系统启动后的时间，这里得到的是微秒us（microseconds），而不是毫秒（millisecond）
+    currentTime = micros();
+
+    for (uint8_t i=0; i < 8; i++)
+    {
+        bit = 0x01 << i;
+        if (bit & mask)
+        {
+            pin = i;
+            // for each pin changed, record time of change
+            if (bit & PCintLast[0])
+            {
+                time = currentTime - pinData[pin].fallTime;
+                pinData[pin].riseTime = currentTime;
+                if ((time >= MINOFFWIDTH) && (time <= MAXOFFWIDTH))
+                    pinData[pin].edge = RISING_EDGE;
+                else
+                    pinData[pin].edge = FALLING_EDGE; //检测到无效的上升沿
+            }
+            else
+            {
+                time = currentTime - pinData[pin].riseTime;
+                pinData[pin].fallTime = currentTime;
+                if ((time >= MINONWIDTH) && (time <= MAXONWIDTH) && (pinData[pin].edge == RISING_EDGE))
+                {
+                    pinData[pin].lastGoodWidth = time;//占空时间
+                    pinData[pin].edge = FALLING_EDGE;
+                }
+            }
+        }
+    }
 }
 
 int Receiver::getRawChannelValue(byte channel)
 {
-  byte pin = channel;
-  uint8_t oldSREG = SREG;
-  cli();
-  // Get receiver value read by pin change interrupt handler
-  uint16_t receiverRawValue = pinData[pin].lastGoodWidth;
-  SREG = oldSREG;
+    byte pin = channel;
+    uint8_t oldSREG = SREG;
+    cli();
+    // Get receiver value read by pin change interrupt handler
+    uint16_t receiverRawValue = pinData[pin].lastGoodWidth;
+    SREG = oldSREG;
 
-  return receiverRawValue;
+    return receiverRawValue;
 }

@@ -614,49 +614,49 @@ MPU6050::MPU6050()
 
 void MPU6050::Init()
 {
-  //MPU6050启动时默认：
-  //陀螺仪量程：+/- 250deg
-  //加速度计量程：+/- 2g
-  //使用内部8MHz时钟源
-  //传感器处于睡眠模式（sleep mode）
+    //MPU6050启动时默认：
+    //陀螺仪量程：+/- 250deg
+    //加速度计量程：+/- 2g
+    //使用内部8MHz时钟源
+    //传感器处于睡眠模式（sleep mode）
 
-  int error;
-  uint8_t c;
-  error = Read (MPU6050_WHO_AM_I, &c, 1);
-  Serial.print(F("WHO_AM_I : "));
-  Serial.print(c,HEX);
-  Serial.print(F(", error = "));
-  Serial.println(error,DEC);
+    int error;
+    uint8_t c;
+    error = Read (MPU6050_WHO_AM_I, &c, 1);
+    Serial.print(F("WHO_AM_I : "));
+    Serial.print(c,HEX);
+    Serial.print(F(", error = "));
+    Serial.println(error,DEC);
 
-  // According to the datasheet, the 'sleep' bit
-  // should read a '1'. But I read a '0'.
-  // That bit has to be cleared, since the sensor
-  // is in sleep mode at power-up. Even if the
-  // bit reads '0'.
-  error = Read (MPU6050_PWR_MGMT_2, &c, 1);
-  Serial.print(F("PWR_MGMT_2 : "));
-  Serial.print(c,HEX);
-  Serial.print(F(", error = "));
-  Serial.println(error,DEC);
+    // According to the datasheet, the 'sleep' bit
+    // should read a '1'. But I read a '0'.
+    // That bit has to be cleared, since the sensor
+    // is in sleep mode at power-up. Even if the
+    // bit reads '0'.
+    error = Read (MPU6050_PWR_MGMT_2, &c, 1);
+    Serial.print(F("PWR_MGMT_2 : "));
+    Serial.print(c,HEX);
+    Serial.print(F(", error = "));
+    Serial.println(error,DEC);
 
 
-  // Clear the 'sleep' bit to start the sensor.
-  WriteRegister(MPU6050_PWR_MGMT_1, 0);
+    // Clear the 'sleep' bit to start the sensor.
+    WriteRegister(MPU6050_PWR_MGMT_1, 0);
 }
 
 int MPU6050::ReadData()
 {
     // Read the raw values.
-  // Read 14 bytes at once,
-  // containing acceleration, temperature and gyro.
-  // With the default settings of the MPU-6050,
-  // there is no filter enabled, and the values
-  // are not very stable.
+    // Read 14 bytes at once,
+    // containing acceleration, temperature and gyro.
+    // With the default settings of the MPU-6050,
+    // there is no filter enabled, and the values
+    // are not very stable.
     int error;
     error = Read(MPU6050_ACCEL_XOUT_H, (uint8_t *) &accel_t_gyro, sizeof(accel_t_gyro));
 
     uint8_t swap;
-    #define SWAP(x,y) swap = x; x = y; y = swap
+#define SWAP(x,y) swap = x; x = y; y = swap
     SWAP (accel_t_gyro.reg.x_accel_h, accel_t_gyro.reg.x_accel_l);
     SWAP (accel_t_gyro.reg.y_accel_h, accel_t_gyro.reg.y_accel_l);
     SWAP (accel_t_gyro.reg.z_accel_h, accel_t_gyro.reg.z_accel_l);
@@ -716,28 +716,28 @@ float MPU6050::ReadTemperature()
 //
 int MPU6050::Read(int start, uint8_t *buffer, int size)
 {
-  int i, n, error;
+    int i, n, error;
 
-  Wire.beginTransmission(MPU6050_I2C_ADDRESS);
-  n = Wire.write(start);
-  if (n != 1)
-    return (-10);
+    Wire.beginTransmission(MPU6050_I2C_ADDRESS);
+    n = Wire.write(start);
+    if (n != 1)
+        return (-10);
 
-  n = Wire.endTransmission(false);    // hold the I2C-bus
-  if (n != 0)
-    return (n);
+    n = Wire.endTransmission(false);    // hold the I2C-bus
+    if (n != 0)
+        return (n);
 
-  // Third parameter is true: relase I2C-bus after data is read.
-  Wire.requestFrom(MPU6050_I2C_ADDRESS, size, true);
-  i = 0;
-  while(Wire.available() && i<size)
-  {
-    buffer[i++]=Wire.read();
-  }
-  if ( i != size)
-    return (-11);
+    // Third parameter is true: relase I2C-bus after data is read.
+    Wire.requestFrom(MPU6050_I2C_ADDRESS, size, true);
+    i = 0;
+    while(Wire.available() && i<size)
+    {
+        buffer[i++]=Wire.read();
+    }
+    if ( i != size)
+        return (-11);
 
-  return (0);  // return : no error
+    return (0);  // return : no error
 }
 
 // MPU6050_write
@@ -759,22 +759,22 @@ int MPU6050::Read(int start, uint8_t *buffer, int size)
 //   MPU6050_write (MPU6050_PWR_MGMT_1, &c, 1);
 int MPU6050::Write(int start, const uint8_t *pData, int size)
 {
-      int n, error;
+    int n, error;
 
-  Wire.beginTransmission(MPU6050_I2C_ADDRESS);
-  n = Wire.write(start);        // write the start address
-  if (n != 1)
-    return (-20);
+    Wire.beginTransmission(MPU6050_I2C_ADDRESS);
+    n = Wire.write(start);        // write the start address
+    if (n != 1)
+        return (-20);
 
-  n = Wire.write(pData, size);  // write data bytes
-  if (n != size)
-    return (-21);
+    n = Wire.write(pData, size);  // write data bytes
+    if (n != size)
+        return (-21);
 
-  error = Wire.endTransmission(true); // release the I2C-bus
-  if (error != 0)
-    return (error);
+    error = Wire.endTransmission(true); // release the I2C-bus
+    if (error != 0)
+        return (error);
 
-  return (0);         // return : no error
+    return (0);         // return : no error
 }
 
 // MPU6050_write_reg
@@ -785,7 +785,7 @@ int MPU6050::Write(int start, const uint8_t *pData, int size)
 // to make it easier to write a single register.
 int MPU6050::WriteRegister(int reg, uint8_t data)
 {
-  int error;
-  error = Write(reg, &data, 1);
-  return (error);
+    int error;
+    error = Write(reg, &data, 1);
+    return (error);
 }

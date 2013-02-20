@@ -23,7 +23,6 @@
 #define MAXOFFWIDTH 24000
 
 //通道定义
-#define ChannelNumber 4
 #define XAXIS 0
 #define YAXIS 1
 #define ZAXIS 2
@@ -53,8 +52,7 @@ public:
     void MegaPcIntISR();
     int getRawChannelValue(byte channel);
 
-    int receiverData[ChannelNumber];
-    int receiverCommand[ChannelNumber];
+    int ChannelData[4];
 
     tPinTimingData pinData[9];
 

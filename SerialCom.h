@@ -12,8 +12,9 @@ public:
     SerialCom();
 
     void Init();//串口初始化
-    void SensorDataToPC(MPU6050 Sensor);//将MPU6050的数据发送到串口
-    void ReceiverDataToPC(Receiver MyReceiver);//将接收机的信号数据数据发送到串口
+    void DataToPC(MPU6050 MySensor,Receiver MyReceiver);//将数据发送到串口
+    void SensorDataToPC(MPU6050 MySensor);//将MPU6050的数据发送到串口
+    void ChannelDataToPC(Receiver MyReceiver);//将接收机的信号数据数据发送到串口
 };
 
 #endif // SERIALCOM_H_INCLUDED
