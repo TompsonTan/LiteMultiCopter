@@ -26,18 +26,12 @@ void Receiver::Init()
     ChannelData[THROTTLE] = 1000;
 }
 
-
-/*avr在硬件中断过程中,只是对程序计数器2个字节压入堆栈,
-状态寄存器不由硬件处理,要由用户软件来完成。
-就是说要由软件来压入堆栈*/
-
-
 void Receiver::ReadData()
 {
-    for(byte channel = XAXIS; channel < 4; channel++)
+    for(int i = 0; i < 4; i++)
     {
-        // 接收机信号校正/微调
-        ChannelData[channel] = getRawChannelValue(channel);
+        // 获取每个通道的信号
+        ChannelData[i] = getRawChannelValue(i);
     }
 }
 
@@ -93,6 +87,11 @@ void Receiver::MegaPcIntISR()
         }
     }
 }
+
+
+/*avr在硬件中断过程中,只是对程序计数器2个字节压入堆栈,
+状态寄存器不由硬件处理,要由用户软件来完成。
+就是说要由软件来压入堆栈*/
 
 int Receiver::getRawChannelValue(byte channel)
 {

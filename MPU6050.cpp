@@ -24,14 +24,7 @@
 //Register 0x75 (WHO_AM_I)   = 0x68.
 
 
-// Register names according to the datasheet.
-// According to the InvenSense document
-// "MPU-6000 and MPU-6050 Register Map
-// and Descriptions Revision 3.2", there are no registers
-// at 0x02 ... 0x18, but according other information
-// the registers in that unknown area are for gain
-// and offsets.
-//
+// MPU-60X0寄存器映射表
 #define MPU6050_AUX_VDDIO          0x01   // R/W
 #define MPU6050_SMPLRT_DIV         0x19   // R/W
 #define MPU6050_CONFIG             0x1A   // R/W
@@ -646,12 +639,9 @@ void MPU6050::Init()
 
 int MPU6050::ReadData()
 {
-    // Read the raw values.
-    // Read 14 bytes at once,
-    // containing acceleration, temperature and gyro.
-    // With the default settings of the MPU-6050,
-    // there is no filter enabled, and the values
-    // are not very stable.
+    // 读取原始数值
+    // 一次性读取包括加速度、角速度和温度在内的14个字节数据
+    // 在MPU-6050的默认设置下是没有打开滤波的，因此数值不是很稳定
     int error;
     error = Read(MPU6050_ACCEL_XOUT_H, (uint8_t *) &accel_t_gyro, sizeof(accel_t_gyro));
 
