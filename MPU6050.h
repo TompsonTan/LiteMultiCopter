@@ -1,7 +1,6 @@
 #ifndef MPU6050_H_INCLUDED
 #define MPU6050_H_INCLUDED
 
-//#include"Arduino.h"
 #include <Wire.h>
 
 //声明一个联合体存放寄存器地址和测量数据。
@@ -49,14 +48,18 @@ public:
     void Init();
 
     int ReadData();
+
+    //读取加速度
     float ReadAccX();
     float ReadAccY();
     float ReadAccZ();
 
+    //读取角速度
     float ReadGyroX();
     float ReadGyroY();
     float ReadGyroZ();
 
+    //读取温度
     float ReadTemperature();
 
 private:
