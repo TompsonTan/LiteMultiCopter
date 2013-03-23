@@ -66,7 +66,6 @@ private:
     AccGyo accel_t_gyro;
     int Read(int start, uint8_t *buffer, int size);
     int Write(int start, const uint8_t *pData, int size);
-    int WriteRegister(int reg, uint8_t data);
 };
 
 #endif // MPU6050_H_INCLUDED
