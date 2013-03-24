@@ -20,7 +20,7 @@ SIGNAL(PCINT2_vect)
 
 void setup()
 {
-    //初始化I2C总线
+    //加入i2c 总线
     Wire.begin();
 
     //初始化串口通信

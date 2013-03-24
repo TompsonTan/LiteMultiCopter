@@ -47,7 +47,7 @@ public:
     MPU6050();
     void Init();
 
-    int ReadData();
+    void ReadData();
 
     //读取加速度
     float ReadAccX();
@@ -64,8 +64,8 @@ public:
 
 private:
     AccGyo accel_t_gyro;
-    int Read(int start, uint8_t *buffer, int size);
-    int Write(int start, const uint8_t *pData, int size);
+    void Read(int start, uint8_t *buffer, int size);
+    void Write(int start, const uint8_t *pData, int size);
 };
 
 #endif // MPU6050_H_INCLUDED
