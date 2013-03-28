@@ -1,32 +1,32 @@
 /****************
- µ¥¸öµç»ú²âÊÔÊµÑé
+ å•ä¸ªç”µæœºæµ‹è¯•å®éªŒ
  ****************/
- 
- 
-#define analogPin 9        //½«9ºÅ¹Ü½Å¶¨ÒåÎªÊä³ö¹Ü½Å
 
-int val;                   //Ìí¼Ó±äÁ¿
+
+#define analogPin 9        //å°†9å·ç®¡è„šå®šä¹‰ä¸ºè¾“å‡ºç®¡è„š
+
+int val;                   //æ·»åŠ å˜é‡
 
 void setup()
  {
-   Serial.begin(9600);     //ÆğÊ¼²¨ÌØÂÊ
+   Serial.begin(9600);     //èµ·å§‹æ³¢ç‰¹ç‡
  }
 
 void loop()
 {
-  
+
    for(val=43;val<=255;val=val+1)
    {
-     analogWrite(analogPin,val)£» 
+     analogWrite(analogPin,val)ï¼›
    }
-   
-   Serial.println(val);           
-   //Êä³ö×î´óÖµ
+
+   Serial.println(val);
+   //è¾“å‡ºæœ€å¤§å€¼
    for(val=255;val>=43;val=val-1)
    {
      analogWrite(analogPin,val);
-   }  
-   
-  Serial.println(val);          
-  //Êä³ö×îĞ¡Öµ
+   }
+
+  Serial.println(val);
+  //è¾“å‡ºæœ€å°å€¼
 }
