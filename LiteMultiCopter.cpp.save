@@ -52,11 +52,9 @@ void loop()
     LMC_Com.DataToPC(LMC_Sensor,LMC_Receiver);
 
     /******下面就是PID算法和根据PID的结果来控制电机的函数了******/
-
-    //电机控制未与串口进行通信，有待改进
    void Motor::SingleMotorTest();
    {
-       int val;
+       int Motor_Frontval;
        for(val=43;val<=255;val=val+1)
        {
            analogWrite(Motor_Front,val)；
@@ -66,7 +64,6 @@ void loop()
            analogWrite(Motor_Front,val)；
        }
     }
-
 }
 
     delay(250);

@@ -30,7 +30,7 @@
 
 
 
-  // arduino pins 67, 65, 64, 66, 63, 62
+// arduino pins 67, 65, 64, 66, 63, 62
 //byte receiverPin[4] = {0,1,2,3}; // bit number of PORTK used for XAXIS, YAXIS, ZAXIS, THROTTLE
 
 //通道的数据

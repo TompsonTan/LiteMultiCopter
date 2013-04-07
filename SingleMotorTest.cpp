@@ -2,14 +2,16 @@
  单个电机测试实验
  ****************/
 
+//9号管脚为输出管脚
+#define analogPin 9
 
-#define analogPin 9        //将9号管脚定义为输出管脚
-
-int val;                   //添加变量
+//添加变量
+int val;
 
 void setup()
  {
-   Serial.begin(9600);     //起始波特率
+     //设置起始波特率
+    Serial.begin(9600);
  }
 
 void loop()
