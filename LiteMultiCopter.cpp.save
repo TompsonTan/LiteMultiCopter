@@ -6,11 +6,11 @@
 #include"Receiver.h"
 #include"Motor.h"
 
-//根据Uno板的PWM接口设定的电机控制引脚
-#define Motor_Front 3
-#define Motor_Back 5
-#define Motor_Left 6
-#define Motor_Right 9
+//定义电机控制变量
+int Motor_Front;
+int Motor_Back;
+int Motor_Left;
+int Motor_Right;
 
 
 MPU6050  LMC_Sensor;//加速度/陀螺仪传感器
@@ -38,6 +38,9 @@ void setup()
 
     //设置接收机信号端口
     LMC_Receiver.Init();
+
+    //设置起始波特率
+    Serial.begin(9600);
 }
 
 void loop()
@@ -52,18 +55,13 @@ void loop()
     LMC_Com.DataToPC(LMC_Sensor,LMC_Receiver);
 
     /******下面就是PID算法和根据PID的结果来控制电机的函数了******/
-   void Motor::SingleMotorTest();
-   {
-       int Motor_Frontval;
-       for(val=43;val<=255;val=val+1)
-       {
-           analogWrite(Motor_Front,val)；
-       }
-       for(val=255;val>=43;val=val-1)
-       {
-           analogWrite(Motor_Front,val)；
-       }
-    }
+    
+    //读取接收机信号
+    Motor_Frontl = LMC_Receiver.ChannelData[2];
+    //
+    analogWrite(8,Motor_Front)；
+    Serial.println(Motor_Front);
+
 }
 
     delay(250);
