@@ -5,6 +5,12 @@
 #include"SerialCom.h"
 #include"Receiver.h"
 
+//定义四个控制电机变量
+int Motor_Front;
+int Motor_Back;
+int Motor_Left;
+int Motor_Right;
+
 
 MPU6050  LMC_Sensor;//加速度/陀螺仪传感器
 SerialCom LMC_Com;//串口通信
@@ -20,7 +26,7 @@ SIGNAL(PCINT2_vect)
 
 void setup()
 {
-    //加入i2c 总线
+    //初始化I2C总线
     Wire.begin();
 
     //初始化串口通信
@@ -31,6 +37,9 @@ void setup()
 
     //设置接收机信号端口
     LMC_Receiver.Init();
+
+    //设置起始波特率
+    Serial.begin(9600);
 }
 
 void loop()
@@ -42,11 +51,13 @@ void loop()
     LMC_Receiver.ReadData();
 
     //将陀螺仪和接收机信号发送到串口
-    LMC_Com.DataToPC(LMC_Sensor,LMC_Receiver);
+//    LMC_Com.DataToPC(LMC_Sensor,LMC_Receiver);
 
     /******下面就是PID算法和根据PID的结果来控制电机的函数了******/
 
-
-
-    delay(250);
+    //读取接收机信号，结果需转换后控制电机
+    Motor_Front = LMC_Receiver.ChannelData[2]/8.0;
+    analogWrite(2,Motor_Front);
+    //输出电机控制占空比
+    Serial.println(LMC_Receiver.ChannelData[2]);
 }
