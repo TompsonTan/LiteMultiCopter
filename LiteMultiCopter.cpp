@@ -6,6 +6,14 @@
 #include"Receiver.h"
 #include"Motor.h"
 
+//定义接收机信号变量
+int Receiver_channel_1;
+int Receiver_channel_2;
+int Receiver_channel_3;
+int Receiver_channel_4;
+int Receiver_channel_5;
+int Receiver_channel_6;
+
 //定义电机控制变量
 int Motor_Front;
 int Motor_Back;
@@ -57,12 +65,20 @@ void loop()
     /******下面就是PID算法和根据PID的结果来控制电机的函数了******/
 
     //读取接收机信号控制电机
-    Motor_Frontl = LMC_Receiver.ChannelData[2]/8;
-    analogWrite(8,Motor_Front)；
+    Receiver_channel_3 = LMC_Receiver.ChannelData[2]/8;
+    Motor_Front = Receiver_channel_3;
+    Motor_Back = Receiver_channel_3;
+    Motor_Left = Receiver_channel_3;
+    Motor_Right = Receiver_channel_3;
+
+    analogWrite(2,Motor_Front);
+    analogWrite(3,Motor_Front);
+    analogWrite(4,Motor_Front);
+    analogWrite(5,Motor_Front);
+
     //输出电机控制占空比
     Serial.println(Motor_Front/256);
 
 }
 
-    delay(250);
-}
+

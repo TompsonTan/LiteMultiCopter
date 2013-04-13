@@ -1,0 +1,280 @@
+# depslib dependency file v1.0
+1364008335 source:d:\software\github\litemulticopter\cores\cdc.cpp
+	<CDC.cpp>
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\cdc.cpp
+	"Platform.h"
+	"USBAPI.h"
+	<avr/wdt.h>
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\platform.h
+	<inttypes.h>
+	<avr/pgmspace.h>
+	<avr/eeprom.h>
+	<avr/interrupt.h>
+	<util/delay.h>
+	"Arduino.h"
+	"USBDesc.h"
+	"USBCore.h"
+	"USBAPI.h"
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\arduino.h
+	<stdlib.h>
+	<string.h>
+	<math.h>
+	<avr/pgmspace.h>
+	<avr/io.h>
+	<avr/interrupt.h>
+	"binary.h"
+	"WCharacter.h"
+	"WString.h"
+	"HardwareSerial.h"
+	"pins_arduino.h"
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\binary.h
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\wcharacter.h
+	<ctype.h>
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\wstring.h
+	<stdlib.h>
+	<string.h>
+	<ctype.h>
+	<avr/pgmspace.h>
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\hardwareserial.h
+	<inttypes.h>
+	"Stream.h"
+	"USBAPI.h"
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\stream.h
+	<inttypes.h>
+	"Print.h"
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\print.h
+	<inttypes.h>
+	<stdio.h>
+	"WString.h"
+	"Printable.h"
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\printable.h
+	<new.h>
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\new.h
+	<stdlib.h>
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\usbapi.h
+
+1355115038 c:\codeblocks\arduino\hardware\arduino\variants\mega\pins_arduino.h
+	<avr/pgmspace.h>
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\usbdesc.h
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\usbcore.h
+
+1364008335 source:d:\software\github\litemulticopter\cores\hardwareserial.cpp
+	<HardwareSerial.cpp>
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\hardwareserial.cpp
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	<inttypes.h>
+	"Arduino.h"
+	"wiring_private.h"
+	"HardwareSerial.h"
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\wiring_private.h
+	<avr/io.h>
+	<avr/interrupt.h>
+	<stdio.h>
+	<stdarg.h>
+	"Arduino.h"
+
+1364008335 source:d:\software\github\litemulticopter\cores\hid.cpp
+	<HID.cpp>
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\hid.cpp
+	"Platform.h"
+	"USBAPI.h"
+	"USBDesc.h"
+
+1364008335 source:d:\software\github\litemulticopter\cores\ipaddress.cpp
+	<IPAddress.cpp>
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\ipaddress.cpp
+	<Arduino.h>
+	<IPAddress.h>
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\ipaddress.h
+	<Printable.h>
+
+1364008335 source:d:\software\github\litemulticopter\cores\main.cpp
+	<main.cpp>
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\main.cpp
+	<Arduino.h>
+
+1364008335 source:d:\software\github\litemulticopter\cores\new.cpp
+	<new.cpp>
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\new.cpp
+	<new.h>
+
+1364008335 source:d:\software\github\litemulticopter\cores\print.cpp
+	<Print.cpp>
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\print.cpp
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	<math.h>
+	"Arduino.h"
+	"Print.h"
+
+1364008335 source:d:\software\github\litemulticopter\cores\stream.cpp
+	<Stream.cpp>
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\stream.cpp
+	"Arduino.h"
+	"Stream.h"
+
+1364008335 source:d:\software\github\litemulticopter\cores\tone.cpp
+	<Tone.cpp>
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\tone.cpp
+	<avr/interrupt.h>
+	<avr/pgmspace.h>
+	"Arduino.h"
+	"pins_arduino.h"
+
+1364008335 source:d:\software\github\litemulticopter\cores\usbcore.cpp
+	<USBCore.cpp>
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\usbcore.cpp
+	"Platform.h"
+	"USBAPI.h"
+	"USBDesc.h"
+
+1364008335 source:d:\software\github\litemulticopter\cores\winterrupts.c
+	<WInterrupts.c>
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\winterrupts.c
+	<inttypes.h>
+	<avr/io.h>
+	<avr/interrupt.h>
+	<avr/pgmspace.h>
+	<stdio.h>
+	"wiring_private.h"
+
+1364008335 source:d:\software\github\litemulticopter\cores\wiring.c
+	<wiring.c>
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\wiring.c
+	"wiring_private.h"
+
+1364008335 source:d:\software\github\litemulticopter\cores\wiring_analog.c
+	<wiring_analog.c>
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\wiring_analog.c
+	"wiring_private.h"
+	"pins_arduino.h"
+
+1364008335 source:d:\software\github\litemulticopter\cores\wiring_digital.c
+	<wiring_digital.c>
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\wiring_digital.c
+	"wiring_private.h"
+	"pins_arduino.h"
+
+1364008335 source:d:\software\github\litemulticopter\cores\wiring_pulse.c
+	<wiring_pulse.c>
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\wiring_pulse.c
+	"wiring_private.h"
+	"pins_arduino.h"
+
+1364008335 source:d:\software\github\litemulticopter\cores\wiring_shift.c
+	<wiring_shift.c>
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\wiring_shift.c
+	"wiring_private.h"
+
+1364008335 source:d:\software\github\litemulticopter\cores\wmath.cpp
+	<WMath.cpp>
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\wmath.cpp
+	"stdlib.h"
+
+1364008335 source:d:\software\github\litemulticopter\cores\wstring.cpp
+	<WString.cpp>
+
+1355115034 c:\codeblocks\arduino\hardware\arduino\cores\arduino\wstring.cpp
+	"WString.h"
+
+1364008335 source:d:\software\github\litemulticopter\include\libraries.cpp
+	<Arduino.h>
+	"config.h"
+	"Adafruit_GFX.cpp"
+	"glcdfont.c"
+	"Adafruit_PCD8544.cpp"
+	"EEPROM.cpp"
+	"w5100.cpp"
+	"socket.cpp"
+	"Dns.cpp"
+	"Dhcp.cpp"
+	"Ethernet.cpp"
+	"EthernetClient.cpp"
+	"EthernetServer.cpp"
+	"EthernetUdp.cpp"
+	"Firmata.cpp"
+	"LiquidCrystal.cpp"
+	"LCD4884.cpp"
+	"OBD.cpp"
+	"SD.cpp"
+	"Sd2Card.cpp"
+	"SdFile.cpp"
+	"SdVolume.cpp"
+	"File.cpp"
+	"Servo.cpp"
+	"SoftwareSerial.cpp"
+	"SPI.cpp"
+	"stepper.cpp"
+	"TinyGPS.cpp"
+	"server_drv.cpp"
+	"socket.cpp"
+	"spi_drv.cpp"
+	"wifi_drv.cpp"
+	"WiFi.cpp"
+	"WiFiClient.cpp"
+	"WiFiServer.cpp"
+	"Wire.cpp"
+	"twi.c"
+
+1364008335 d:\software\github\litemulticopter\include\config.h
+
+1364008335 source:d:\software\github\litemulticopter\mpu6050.cpp
+	"Arduino.h"
+	<Wire.h>
+	"MPU6050.h"
+	"MPU6050_RegistersMap.h"
+
+1364008335 d:\software\github\litemulticopter\mpu6050.h
+	<Wire.h>
+
+1364008335 d:\software\github\litemulticopter\mpu6050_registersmap.h
+
+1364008335 source:d:\software\github\litemulticopter\receiver.cpp
+	"Receiver.h"
+
+1365317625 d:\software\github\litemulticopter\receiver.h
+	"Arduino.h"
+
+1364008335 source:d:\software\github\litemulticopter\serialcom.cpp
+	"SerialCom.h"
+
+1364008335 d:\software\github\litemulticopter\serialcom.h
+	"Arduino.h"
+	"MPU6050.h"
+	"Receiver.h"
+

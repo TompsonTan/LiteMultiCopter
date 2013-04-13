@@ -501,7 +501,6 @@
 		<Unit filename="Receiver.h" />
 		<Unit filename="SerialCom.cpp" />
 		<Unit filename="SerialCom.h" />
-		<Unit filename="SingleMotorTest.cpp" />
 		<Unit filename="cores/CDC.cpp" />
 		<Unit filename="cores/HID.cpp" />
 		<Unit filename="cores/HardwareSerial.cpp" />
