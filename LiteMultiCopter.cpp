@@ -4,7 +4,6 @@
 #include"MPU6050.h"
 #include"SerialCom.h"
 #include"Receiver.h"
-#include"Motor.h"
 
 //定义接收机信号变量
 int Receiver_channel_1;
@@ -65,16 +64,16 @@ void loop()
     /******下面就是PID算法和根据PID的结果来控制电机的函数了******/
 
     //读取接收机信号控制电机
-    Receiver_channel_3 = LMC_Receiver.ChannelData[2]/8;
+    Receiver_channel_3 = LMC_Receiver.ChannelData[2]/8.0;
     Motor_Front = Receiver_channel_3;
     Motor_Back = Receiver_channel_3;
     Motor_Left = Receiver_channel_3;
     Motor_Right = Receiver_channel_3;
 
     analogWrite(2,Motor_Front);
-    analogWrite(3,Motor_Front);
-    analogWrite(4,Motor_Front);
-    analogWrite(5,Motor_Front);
+    analogWrite(3,Motor_Back);
+    analogWrite(5,Motor_Left);
+    analogWrite(6,Motor_Right);
 
     //输出电机控制占空比
     Serial.println(Motor_Front/256);
