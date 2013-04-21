@@ -6,20 +6,6 @@
 #include"Receiver.h"
 #include"Motor.h"
 
-//定义接收机信号变量
-int Receiver_channel_1;
-int Receiver_channel_2;
-int Receiver_channel_3;
-int Receiver_channel_4;
-int Receiver_channel_5;
-int Receiver_channel_6;
-
-//定义电机控制变量
-int Motor_Front;
-int Motor_Back;
-int Motor_Left;
-int Motor_Right;
-
 
 MPU6050  LMC_Sensor;//加速度/陀螺仪传感器
 SerialCom LMC_Com;//串口通信
