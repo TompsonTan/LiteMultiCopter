@@ -496,7 +496,6 @@
 		<Unit filename="LiteMultiCopter.cpp" />
 		<Unit filename="MPU6050.cpp" />
 		<Unit filename="MPU6050.h" />
-		<Unit filename="MPU6050_RegistersMap.h" />
 		<Unit filename="Receiver.cpp" />
 		<Unit filename="Receiver.h" />
 		<Unit filename="SerialCom.cpp" />
