@@ -4,17 +4,13 @@
 #include"MPU6050.h"
 #include"SerialCom.h"
 #include"Receiver.h"
-
-//定义四个控制电机变量
-int Motor_Front;
-int Motor_Back;
-int Motor_Left;
-int Motor_Right;
+#include"Motor.h"
 
 
 MPU6050  LMC_Sensor;//加速度/陀螺仪传感器
 SerialCom LMC_Com;//串口通信
 Receiver    LMC_Receiver;//接收机信号读取
+Motor       LMC_Motor;//电机控制
 
 //中断服务函数，用来检测接收机信号
 /*当发现接收机通道电平变化时，会中断当前的“进程”，
@@ -30,7 +26,7 @@ void setup()
     Wire.begin();
 
     //初始化串口通信
-    LMC_Com.Init();
+    //LMC_Com.Init();
 
     //初始化MPU6050
     LMC_Sensor.Init();
@@ -40,6 +36,16 @@ void setup()
 
     //设置起始波特率
     Serial.begin(9600);
+
+    pinMode(2, OUTPUT);
+    pinMode(3, OUTPUT);
+    pinMode(5, OUTPUT);
+    pinMode(6, OUTPUT);
+
+//    digitalWrite(2, HIGH);
+//    digitalWrite(3, HIGH);
+//    digitalWrite(5, HIGH);
+//    digitalWrite(6, HIGH);
 }
 
 void loop()
@@ -56,8 +62,12 @@ void loop()
     /******下面就是PID算法和根据PID的结果来控制电机的函数了******/
 
     //读取接收机信号，结果需转换后控制电机
-    Motor_Front = LMC_Receiver.ChannelData[2]/8.0;
-    analogWrite(2,Motor_Front);
-    //输出电机控制占空比
-    Serial.println(LMC_Receiver.ChannelData[2]);
+    LMC_Motor.CalculateOutput(LMC_Receiver);
+    analogWrite(2,LMC_Motor.Front);
+    analogWrite(3,LMC_Motor.Back);
+    analogWrite(5,LMC_Motor.Right);
+    analogWrite(6,LMC_Motor.Left);
+
+//    //输出电机控制占空比
+//    Serial.println(Motor_Front);
 }
