@@ -13,28 +13,28 @@ void SerialCom::Init()
 
 void SerialCom::DataToPC(MPU6050 MySensor,Receiver MyReceiver)
 {
-    //SensorDataToPC(MySensor);
-    ChannelDataToPC(MyReceiver);
-
-    String comdata = "";
-    while(Serial.available()>0)
-    {
-        //msg = Serial.read();
-        comdata +=char(Serial.read());
-        //Serial.print(msg);
-        //Serial.println(msg,DEC);
-    }
-    if (comdata.length() >0)
-    {
-        //Serial.print(comdata);
-        //Serial.println(F(""));
-
-        //comdata.trim();
-        msg = comdata.toInt();
-        Serial.print(msg);
-        //String hhh = " ";
-        //Serial.println(hhh);
-    }
+    SensorDataToPC(MySensor);
+//    ChannelDataToPC(MyReceiver);
+//
+//    String comdata = "";
+//    while(Serial.available()>0)
+//    {
+//        msg = Serial.read();
+//        comdata +=char(Serial.read());
+//        Serial.print(msg);
+//        Serial.println(msg,DEC);
+//    }
+//    if (comdata.length() >0)
+//    {
+//        Serial.print(comdata);
+//        Serial.println(F(""));
+//
+//        comdata.trim();
+//        msg = comdata.toInt();
+//        Serial.print(msg);
+//        String hhh = " ";
+//        Serial.println(hhh);
+//    }
 //    Serial.println("enter 4 letter stream indentifier");
 }
 

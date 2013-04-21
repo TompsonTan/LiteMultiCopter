@@ -20,16 +20,8 @@ void MPU6050::Init()
     //传感器处于睡眠模式（sleep mode）
 
     //清除'sleep' 位，启动传感器
-    Write(MPU6050_PWR_MGMT_1, 0, 1);
-}
-
-//将从传感器读到的原始数据高低八位置换
-void SWAP(uint8_t x,uint8_t y)
-{
-    uint8_t swap;
-    swap = x;
-    x = y;
-    y = swap;
+    uint8_t data = 0;
+    Write(MPU6050_PWR_MGMT_1, &data, 1);
 }
 
 // 读取原始数值
@@ -39,13 +31,16 @@ void MPU6050::ReadData()
 {
     Read(MPU6050_ACCEL_XOUT_H, (uint8_t *) &accel_t_gyro, sizeof(accel_t_gyro));
 
-    SWAP (accel_t_gyro.reg.x_accel_h, accel_t_gyro.reg.x_accel_l);
-    SWAP (accel_t_gyro.reg.y_accel_h, accel_t_gyro.reg.y_accel_l);
-    SWAP (accel_t_gyro.reg.z_accel_h, accel_t_gyro.reg.z_accel_l);
-    SWAP (accel_t_gyro.reg.t_h, accel_t_gyro.reg.t_l);
-    SWAP (accel_t_gyro.reg.x_gyro_h, accel_t_gyro.reg.x_gyro_l);
-    SWAP (accel_t_gyro.reg.y_gyro_h, accel_t_gyro.reg.y_gyro_l);
-    SWAP (accel_t_gyro.reg.z_gyro_h, accel_t_gyro.reg.z_gyro_l);
+    //将从传感器读到的原始数据高低八位置换
+    uint8_t swap;
+    #define SWAP(x,y) swap = x; x = y; y = swap
+    SWAP(accel_t_gyro.reg.x_accel_h, accel_t_gyro.reg.x_accel_l);
+    SWAP(accel_t_gyro.reg.y_accel_h, accel_t_gyro.reg.y_accel_l);
+    SWAP(accel_t_gyro.reg.z_accel_h, accel_t_gyro.reg.z_accel_l);
+    SWAP(accel_t_gyro.reg.t_h, accel_t_gyro.reg.t_l);
+    SWAP(accel_t_gyro.reg.x_gyro_h, accel_t_gyro.reg.x_gyro_l);
+    SWAP(accel_t_gyro.reg.y_gyro_h, accel_t_gyro.reg.y_gyro_l);
+    SWAP(accel_t_gyro.reg.z_gyro_h, accel_t_gyro.reg.z_gyro_l);
 }
 float MPU6050::ReadAccX()
 {
@@ -96,11 +91,12 @@ void MPU6050::Read(int start, uint8_t *buffer, int size)
     Wire.endTransmission(false);    // 拉起
 
     //向I2C设备请求读取size大小的数据，当数据完成读取之后释放I2C总线
-    Wire.requestFrom(MPU6050_I2C_ADDRESS, size);
+    Wire.requestFrom(MPU6050_I2C_ADDRESS, size,true);
 
-    for(int i = 0;(Wire.available() && i<size);i++)
+    int i = 0;
+    while(Wire.available() && i<size)
     {
-        buffer[i]=Wire.read();//读取数据
+        buffer[i++]=Wire.read();//读取数据
     }
 }
 

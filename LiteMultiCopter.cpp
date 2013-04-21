@@ -26,7 +26,7 @@ void setup()
     Wire.begin();
 
     //初始化串口通信
-    //LMC_Com.Init();
+    LMC_Com.Init();
 
     //初始化MPU6050
     LMC_Sensor.Init();
@@ -57,7 +57,7 @@ void loop()
     LMC_Receiver.ReadData();
 
     //将陀螺仪和接收机信号发送到串口
-//    LMC_Com.DataToPC(LMC_Sensor,LMC_Receiver);
+    LMC_Com.DataToPC(LMC_Sensor,LMC_Receiver);
 
     /******下面就是PID算法和根据PID的结果来控制电机的函数了******/
 
@@ -70,4 +70,5 @@ void loop()
 
 //    //输出电机控制占空比
 //    Serial.println(Motor_Front);
+delay(1000);
 }
