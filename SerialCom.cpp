@@ -2,7 +2,7 @@
 
 SerialCom::SerialCom()
 {
-
+    //msg = 1;
 }
 
 void SerialCom::Init()
@@ -15,6 +15,27 @@ void SerialCom::DataToPC(MPU6050 MySensor,Receiver MyReceiver)
 {
     //SensorDataToPC(MySensor);
     ChannelDataToPC(MyReceiver);
+
+    String comdata = "";
+    while(Serial.available()>0)
+    {
+        //msg = Serial.read();
+        comdata +=char(Serial.read());
+        //Serial.print(msg);
+        //Serial.println(msg,DEC);
+    }
+    if (comdata.length() >0)
+    {
+        //Serial.print(comdata);
+        //Serial.println(F(""));
+
+        //comdata.trim();
+        msg = comdata.toInt();
+        Serial.print(msg);
+        //String hhh = " ";
+        //Serial.println(hhh);
+    }
+//    Serial.println("enter 4 letter stream indentifier");
 }
 
 void SerialCom::SensorDataToPC(MPU6050 Sensor)
@@ -60,7 +81,7 @@ void SerialCom::ChannelDataToPC(Receiver MyReceiver)
 //    Serial.print(MyReceiver.receiverCommand[2]);
 //    Serial.println(F(""));
 
-    Serial.print(F("Throttle: "));
-    Serial.print(MyReceiver.ChannelData[3]);
-    Serial.println(F(""));
+//       Serial.print(F("Throttle: "));
+//    Serial.print(MyReceiver.ChannelData[3]);
+//    Serial.println(F(""));
 }
