@@ -41,11 +41,6 @@ void setup()
     pinMode(3, OUTPUT);
     pinMode(5, OUTPUT);
     pinMode(6, OUTPUT);
-
-//    digitalWrite(2, HIGH);
-//    digitalWrite(3, HIGH);
-//    digitalWrite(5, HIGH);
-//    digitalWrite(6, HIGH);
 }
 
 void loop()
@@ -62,7 +57,7 @@ void loop()
     /******下面就是PID算法和根据PID的结果来控制电机的函数了******/
 
     //读取接收机信号，结果需转换后控制电机
-    LMC_Motor.CalculateOutput(LMC_Receiver);
+    LMC_Motor.CalculateOutput(LMC_Sensor,LMC_Receiver);
     analogWrite(2,LMC_Motor.Front);
     analogWrite(3,LMC_Motor.Back);
     analogWrite(5,LMC_Motor.Right);

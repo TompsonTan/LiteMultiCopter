@@ -2,13 +2,14 @@
 #define MOTOR_H
 
 #include"Receiver.h"
+#include"MPU6050.h"
 
 class Motor
 {
     public:
         Motor();
         virtual ~Motor();
-        void CalculateOutput(Receiver MyReceiver);
+        void CalculateOutput(MPU6050  MySensor,Receiver MyReceiver);
         unsigned char MotorLimitValue(int v);
 
     public:
