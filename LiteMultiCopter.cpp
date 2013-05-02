@@ -20,6 +20,41 @@ SIGNAL(PCINT2_vect)
     LMC_Receiver.MegaPcIntISR();
 }
 
+//陀螺仪基准建立
+#define GYROBASECNT 200
+int GyroBaseCnt=0;			//Gyro base build count 陀螺仪中点建立计数器
+
+//四轴锁定/解锁函数
+bool InLock = true;//初始为锁定状态
+int ArmCnt = 0;	//锁定/解锁计数
+#define ARMING_TIME 250
+#define STICKGATE 90//锁定/解锁阀值
+void ArmingRoutine()
+{
+    //消抖动,计数达到阀值的时候认为执行锁定或解锁
+    if(abs(LMC_Receiver.RxRud)>90)
+        ArmCnt++;
+    else
+        ArmCnt = 0;
+
+    if(ArmCnt>ARMING_TIME)
+    {
+        if(InLock)
+        {
+            if(LMC_Receiver.RxRud>STICKGATE)//方向舵向右，解锁
+            {
+                InLock = false;
+                GyroBaseCnt=GYROBASECNT;
+            }
+        }
+        else
+        {
+            if(LMC_Receiver.RxRud<-STICKGATE)//方向舵向左，锁定
+                InLock = true;
+        }
+    }
+
+}
 void setup()
 {
     //初始化I2C总线
@@ -56,8 +91,21 @@ void loop()
 
     /******下面就是PID算法和根据PID的结果来控制电机的函数了******/
 
-    //读取接收机信号，结果需转换后控制电机
-    LMC_Motor.CalculateOutput(LMC_Sensor,LMC_Receiver);
+    if(LMC_Receiver.RxThr<10)//若油门低于10%，进入锁定/解锁函数
+        ArmingRoutine();
+    else
+    {
+        //读取接收机信号，结果需转换后控制电机
+        LMC_Motor.CalculateOutput(LMC_Sensor,LMC_Receiver);
+    }
+
+    //若已锁定或未建立陀螺仪基准，禁止电机输出
+    if(InLock)
+    {
+        LMC_Motor.ZeroOutput();
+    }
+
+    //输出电机控制信号
     analogWrite(2,LMC_Motor.Front);
     analogWrite(3,LMC_Motor.Back);
     analogWrite(5,LMC_Motor.Right);

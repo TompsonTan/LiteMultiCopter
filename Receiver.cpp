@@ -20,10 +20,10 @@ void Receiver::Init()
     //注意：四通道，但开启了6个“引脚电平变化中断”
     PCICR |= 0x1 << 2;
 
-    ChannelData[XAXIS] = 1500;
-    ChannelData[YAXIS] = 1500;
-    ChannelData[ZAXIS] = 1500;
-    ChannelData[THROTTLE] = 1000;
+    ChannelData[0] = 1500;
+    ChannelData[1] = 1500;
+    ChannelData[2] = 1100;
+    ChannelData[3] = 1500;
 }
 
 void Receiver::ReadData()
@@ -33,6 +33,10 @@ void Receiver::ReadData()
         // 获取每个通道的信号
         ChannelData[i] = getRawChannelValue(i);
     }
+    RxAil = (ChannelData[0]-1500)/4.0;
+    RxEle = (ChannelData[1] -1500)/4.0;
+    RxThr = (ChannelData[2]-1100)/8.0;
+    RxRud = (ChannelData[3] -1500)/4.0;
 }
 
 void Receiver::MegaPcIntISR()

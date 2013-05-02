@@ -499,6 +499,8 @@
 		<Unit filename="MPU6050_RegistersMap.h" />
 		<Unit filename="Motor.cpp" />
 		<Unit filename="Motor.h" />
+		<Unit filename="PID.cpp" />
+		<Unit filename="PID.h" />
 		<Unit filename="Receiver.cpp" />
 		<Unit filename="Receiver.h" />
 		<Unit filename="SerialCom.cpp" />

@@ -22,16 +22,6 @@
 #define MINOFFWIDTH 12000
 #define MAXOFFWIDTH 24000
 
-//通道定义
-#define XAXIS 0
-#define YAXIS 1
-#define ZAXIS 2
-#define THROTTLE 3
-
-
-
-  // arduino pins 67, 65, 64, 66, 63, 62
-//byte receiverPin[4] = {0,1,2,3}; // bit number of PORTK used for XAXIS, YAXIS, ZAXIS, THROTTLE
 
 //通道的数据
 typedef struct {
@@ -53,6 +43,9 @@ public:
     int getRawChannelValue(byte channel);
 
     int ChannelData[4];
+
+    float RxThr;//油门,缩放：0~100.0
+    float RxAil,RxEle,RxRud;//副翼、升降舵、方向舵。(与1500相减后的偏差)，再缩放到-100~+100
 
     tPinTimingData pinData[9];
 

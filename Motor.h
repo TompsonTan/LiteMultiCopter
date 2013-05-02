@@ -11,9 +11,10 @@ class Motor
         virtual ~Motor();
         void CalculateOutput(MPU6050  MySensor,Receiver MyReceiver);
         unsigned char MotorLimitValue(int v);
+        void ZeroOutput();
 
     public:
-        int thr,ail,ele,rud;//遥控四个通道的输入:油门、副翼、升降舵、方向舵。
+        int Thr,Ail,Ele,Rud;//油门、副翼、升降舵、方向舵。(操纵时的附加到电机的偏量)
         int Front,Back,Left,Right;//四个电机的输出
 };
 
