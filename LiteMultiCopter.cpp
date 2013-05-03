@@ -6,6 +6,8 @@
 #include"Receiver.h"
 #include"Motor.h"
 
+#define USE_SERIAL 1
+
 
 MPU6050  LMC_Sensor;//加速度/陀螺仪传感器
 SerialCom LMC_Com;//串口通信
@@ -29,10 +31,11 @@ bool InLock = true;//初始为锁定状态
 int ArmCnt = 0;	//锁定/解锁计数
 #define ARMING_TIME 250
 #define STICKGATE 90//锁定/解锁阀值
+int LockLED = A5;//若常亮，则为锁定；闪烁，则为已解锁
 void ArmingRoutine()
 {
     //消抖动,计数达到阀值的时候认为执行锁定或解锁
-    if(abs(LMC_Receiver.RxRud)>90)
+    if(abs(LMC_Receiver.RxRud)>85)
         ArmCnt++;
     else
         ArmCnt = 0;
@@ -55,13 +58,31 @@ void ArmingRoutine()
     }
 
 }
+
+bool ESC_isCalibrated = false;
+void CalibrateThrottle()
+{
+    if(!ESC_isCalibrated)
+    {
+        if(LMC_Receiver.RxThr>85)
+        {
+            InLock = false;
+            ESC_isCalibrated = true;
+        }
+    }
+}
+
 void setup()
 {
     //初始化I2C总线
     Wire.begin();
 
+//#if(USE_SERIAL)
     //初始化串口通信
     LMC_Com.Init();
+    //设置起始波特率
+    Serial.begin(9600);
+//#endif
 
     //初始化MPU6050
     LMC_Sensor.Init();
@@ -69,13 +90,13 @@ void setup()
     //设置接收机信号端口
     LMC_Receiver.Init();
 
-    //设置起始波特率
-    Serial.begin(9600);
-
     pinMode(2, OUTPUT);
     pinMode(3, OUTPUT);
     pinMode(5, OUTPUT);
     pinMode(6, OUTPUT);
+
+    pinMode(LockLED,OUTPUT);
+    digitalWrite(LockLED,LOW);
 }
 
 void loop()
@@ -87,31 +108,45 @@ void loop()
     LMC_Receiver.ReadData();
 
     //将陀螺仪和接收机信号发送到串口
-    LMC_Com.DataToPC(LMC_Sensor,LMC_Receiver);
+    //LMC_Com.DataToPC(LMC_Sensor,LMC_Receiver);
+
+    //CalibrateThrottle();
+//        if(!ESC_isCalibrated)
+//    {
+//        if(LMC_Receiver.RxThr>85)
+//        {
+//            InLock = false;
+//            ESC_isCalibrated = true;
+//            LMC_Motor.CalculateOutput(LMC_Sensor,LMC_Receiver);
+//            LMC_Motor.OutPut();
+//            Serial.println(LMC_Motor.Left);
+//        }
+//    }
+
 
     /******下面就是PID算法和根据PID的结果来控制电机的函数了******/
 
-    if(LMC_Receiver.RxThr<10)//若油门低于10%，进入锁定/解锁函数
+    if(LMC_Receiver.RxThr<15)//若油门低于10%，进入锁定/解锁函数
         ArmingRoutine();
-    else
-    {
-        //读取接收机信号，结果需转换后控制电机
-        LMC_Motor.CalculateOutput(LMC_Sensor,LMC_Receiver);
-    }
+
+    //读取接收机信号，结果需转换后控制电机
+    LMC_Motor.CalculateOutput(LMC_Sensor,LMC_Receiver);
 
     //若已锁定或未建立陀螺仪基准，禁止电机输出
     if(InLock)
     {
-        LMC_Motor.ZeroOutput();
+        LMC_Motor.Lock();
+        digitalWrite(LockLED,LOW);
+    }
+    else
+    {
+        digitalWrite(LockLED,HIGH);
     }
 
     //输出电机控制信号
-    analogWrite(2,LMC_Motor.Front);
-    analogWrite(3,LMC_Motor.Back);
-    analogWrite(5,LMC_Motor.Right);
-    analogWrite(6,LMC_Motor.Left);
+    LMC_Motor.OutPut();
 
-//    //输出电机控制占空比
-//    Serial.println(Motor_Front);
-delay(1000);
+    Serial.println(LMC_Motor.Left);
+
+    //delay(500);
 }

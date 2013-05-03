@@ -3,6 +3,7 @@
 
 #include"Receiver.h"
 #include"MPU6050.h"
+#include"PID.h"
 
 class Motor
 {
@@ -11,10 +12,13 @@ class Motor
         virtual ~Motor();
         void CalculateOutput(MPU6050  MySensor,Receiver MyReceiver);
         unsigned char MotorLimitValue(int v);
-        void ZeroOutput();
+        unsigned char MotorLimitOffset(int v);
+        void Lock();
+        void OutPut();
 
     public:
-        int Thr,Ail,Ele,Rud;//油门、副翼、升降舵、方向舵。(操纵时的附加到电机的偏量)
+        PID Pitch_PID,Roll_PID,Yaw_PID;
+        int Throttle,Pitch_Offset,Roll_Offset,Yaw_Offset;//油门、副翼、升降舵、方向舵。(操纵时的附加到电机的偏量)
         int Front,Back,Left,Right;//四个电机的输出
 };
 

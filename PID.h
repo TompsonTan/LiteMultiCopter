@@ -7,15 +7,15 @@ class PID
 {
     public:
         PID();
-        PID(int16_t new_p, int16_t new_i, int16_t new_d);
-        ~PID();
-        int16_t update(int16_t incoming_val,int16_t goal_value);
-        void zero();
-        int16_t p,i,d;
+        PID(float new_p, float new_i, float new_d);
+
+        float update(float incoming_val,float goal_value);
+        void Zero();
+        float p,i,d;
 
     private:
-        int64_t error;
-        int16_t prev_val;
+        float error;
+        float prev_val;
 };
 
 #endif // PID_H
