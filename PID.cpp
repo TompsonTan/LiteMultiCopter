@@ -1,40 +1,38 @@
 #include "PID.h"
 
-#define TOTAL_SCALING_FACTOR 1500.00 //(1<<10) = 1,024.
-#define INTEGRAL_SCALING_FACTOR 8
-
-PID::PID()
+PID::PID(float p, float i, float d)
 {
-    p = 0.2;
-    i = 0.0;
-    d = 0.0;
+    Kp = p;
+    Ki = i;
+    Kd = d;
+    prevTime = millis();
 
-    Zero();
+    iTerm = 0;
 }
 
-PID::PID(float new_p, float new_i, float new_d)
+float PID::Calculate(float Ref,float Input)
 {
-    p = new_p;
-    i = new_i;
-    d= new_d;
+    //计算采样时间，并把ms转换为s
+    long dt = millis() - prevTime;
+    float dt_float = dt*0.001;
+
+    float error = Ref - Input;
+    pTerm = Kp*error;
+    dTerm = - Kd*(Input - prevInput)/dt_float;
+    iTerm += Ki*error*dt;
+
+    float output = pTerm + iTerm + dTerm;
+
+    //更新状态
+    prevTime = millis();
+    prevRef = Ref;
+    prevInput = Input;
+
+    return output;
 }
 
-float PID::update(float incoming_val,float goal_value)
+void PID::resetITerm()
 {
-    float delta =goal_value - incoming_val;
-
-    //积分计算
-    error += delta;
-
-    //微分计算
-    float this_d = incoming_val - prev_val;
-    prev_val = incoming_val;
-
-    return (float) (delta*(float)p)+(error*i)/INTEGRAL_SCALING_FACTOR+(this_d*d)/ (float)TOTAL_SCALING_FACTOR;
-}
-
-void PID::Zero()
-{
-    error = 0;
-    prev_val = 0;
+    iTerm = 0;
+    prevTime = millis();
 }

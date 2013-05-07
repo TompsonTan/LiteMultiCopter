@@ -6,16 +6,19 @@
 class PID
 {
     public:
-        PID();
-        PID(float new_p, float new_i, float new_d);
+        PID(float p, float i, float d);
 
-        float update(float incoming_val,float goal_value);
-        void Zero();
-        float p,i,d;
+        float Calculate(float Ref,float Input);
+        void resetITerm();
 
     private:
-        float error;
-        float prev_val;
+        long prevTime;
+        float prevRef;
+        float prevInput;
+        float pTerm;
+        float iTerm;
+        float dTerm;
+        float Kp, Ki, Kd;
 };
 
 #endif // PID_H

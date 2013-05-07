@@ -3,7 +3,7 @@
 #include "MPU6050.h"
 #include "MPU6050_RegistersMap.h"
 
-//MPU-6050 é»˜è®¤I2Cåœ°å€ä¸º0x68.
+//MPU-6050 Ä¬ÈÏI2CµØÖ·Îª0x68.
 #define MPU6050_I2C_ADDRESS 0x68
 
 MPU6050::MPU6050()
@@ -13,25 +13,25 @@ MPU6050::MPU6050()
 
 void MPU6050::Init()
 {
-    //MPU6050å¯åŠ¨æ—¶é»˜è®¤ï¼š
-    //é™€èºä»ªé‡ç¨‹ï¼š+/- 250deg
-    //åŠ é€Ÿåº¦è®¡é‡ç¨‹ï¼š+/- 2g
-    //ä½¿ç”¨å†…éƒ¨8MHzæ—¶é’Ÿæº
-    //ä¼ æ„Ÿå™¨å¤„äºç¡çœ æ¨¡å¼ï¼ˆsleep modeï¼‰
+    //MPU6050Æô¶¯Ê±Ä¬ÈÏ£º
+    //ÍÓÂİÒÇÁ¿³Ì£º+/- 250deg
+    //¼ÓËÙ¶È¼ÆÁ¿³Ì£º+/- 2g
+    //Ê¹ÓÃÄÚ²¿8MHzÊ±ÖÓÔ´
+    //´«¸ĞÆ÷´¦ÓÚË¯ÃßÄ£Ê½£¨sleep mode£©
 
-    //æ¸…é™¤'sleep' ä½ï¼Œå¯åŠ¨ä¼ æ„Ÿå™¨
+    //Çå³ı'sleep' Î»£¬Æô¶¯´«¸ĞÆ÷
     uint8_t data = 0;
     Write(MPU6050_PWR_MGMT_1, &data, 1);
 }
 
-// è¯»å–åŸå§‹æ•°å€¼
-// ä¸€æ¬¡æ€§è¯»å–åŒ…æ‹¬åŠ é€Ÿåº¦ã€è§’é€Ÿåº¦å’Œæ¸©åº¦åœ¨å†…çš„14ä¸ªå­—èŠ‚æ•°æ®
-// åœ¨MPU-6050çš„é»˜è®¤è®¾ç½®ä¸‹æ˜¯æ²¡æœ‰æ‰“å¼€æ»¤æ³¢çš„ï¼Œå› æ­¤æ•°å€¼ä¸æ˜¯å¾ˆç¨³å®š
+// ¶ÁÈ¡Ô­Ê¼ÊıÖµ
+// Ò»´ÎĞÔ¶ÁÈ¡°üÀ¨¼ÓËÙ¶È¡¢½ÇËÙ¶ÈºÍÎÂ¶ÈÔÚÄÚµÄ14¸ö×Ö½ÚÊı¾İ
+// ÔÚMPU-6050µÄÄ¬ÈÏÉèÖÃÏÂÊÇÃ»ÓĞ´ò¿ªÂË²¨µÄ£¬Òò´ËÊıÖµ²»ÊÇºÜÎÈ¶¨
 void MPU6050::ReadData()
 {
     Read(MPU6050_ACCEL_XOUT_H, (uint8_t *) &accel_t_gyro, sizeof(accel_t_gyro));
 
-    //å°†ä»ä¼ æ„Ÿå™¨è¯»åˆ°çš„åŸå§‹æ•°æ®é«˜ä½å…«ä½ç½®æ¢
+    //½«´Ó´«¸ĞÆ÷¶Áµ½µÄÔ­Ê¼Êı¾İ¸ßµÍ°ËÎ»ÖÃ»»
     uint8_t swap;
     #define SWAP(x,y) swap = x; x = y; y = swap
     SWAP(accel_t_gyro.reg.x_accel_h, accel_t_gyro.reg.x_accel_l);
@@ -57,9 +57,23 @@ float MPU6050::ReadAccZ()
     return accel_t_gyro.value.z_accel/16384.0*9.8;
 }
 
+float MPU6050::ReadPitchAngle()
+{
+    float xtoz = ReadAccX()*(1/ReadAccZ());
+    float pitch = atan(xtoz)/3.14*180;
+    return pitch;
+}
+
+float MPU6050::ReadRollAngle()
+{
+    float ytoz = ReadAccY()*(1/ReadAccZ());
+    float roll = atan(ytoz)/3.14*180;
+    return roll;
+}
+
 float MPU6050::ReadGyroX()
 {
-    return accel_t_gyro.value.x_gyro/131.0;
+    return accel_t_gyro.value.x_gyro/131.0-1.4;
 }
 
 float MPU6050::ReadGyroY()
@@ -77,39 +91,39 @@ float MPU6050::ReadTemperature()
     return ((double) accel_t_gyro.value.temperature + 12412.0) / 340.0;
 }
 
-//MPU6050è¯»å–å‡½æ•°
-//ç”¨äºä»I2Cè®¾å¤‡è¯»å–å¤šä¸ªå­—èŠ‚çš„æ•°æ®
-//ä½¿ç”¨å‡½æ•°Wire.endTransMission()æ¥æ‹‰èµ·æˆ–é‡Šæ”¾æ€»çº¿
+//MPU6050¶ÁÈ¡º¯Êı
+//ÓÃÓÚ´ÓI2CÉè±¸¶ÁÈ¡¶à¸ö×Ö½ÚµÄÊı¾İ
+//Ê¹ÓÃº¯ÊıWire.endTransMission()À´À­Æğ»òÊÍ·Å×ÜÏß
 void MPU6050::Read(int start, uint8_t *buffer, int size)
 {
-    //æ ¹æ®ä»æœºåœ°å€å‘èµ·é€šä¿¡
+    //¸ù¾İ´Ó»úµØÖ··¢ÆğÍ¨ĞÅ
     Wire.beginTransmission(MPU6050_I2C_ADDRESS);
 
     Wire.write(start);
 
-    //ç”¨falseä½œä¸ºå‚æ•°ï¼Œå½“æ•°æ®å‘é€å®Œä¹‹åå‘é€é‡å¯ä¿¡å·ï¼Œå¹¶ä¸é‡Šæ”¾I2Cæ€»çº¿
-    Wire.endTransmission(false);    // æ‹‰èµ·
+    //ÓÃfalse×÷Îª²ÎÊı£¬µ±Êı¾İ·¢ËÍÍêÖ®ºó·¢ËÍÖØÆôĞÅºÅ£¬²¢²»ÊÍ·ÅI2C×ÜÏß
+    Wire.endTransmission(false);    // À­Æğ
 
-    //å‘I2Cè®¾å¤‡è¯·æ±‚è¯»å–sizeå¤§å°çš„æ•°æ®ï¼Œå½“æ•°æ®å®Œæˆè¯»å–ä¹‹åé‡Šæ”¾I2Cæ€»çº¿
+    //ÏòI2CÉè±¸ÇëÇó¶ÁÈ¡size´óĞ¡µÄÊı¾İ£¬µ±Êı¾İÍê³É¶ÁÈ¡Ö®ºóÊÍ·ÅI2C×ÜÏß
     Wire.requestFrom(MPU6050_I2C_ADDRESS, size,true);
 
     int i = 0;
     while(Wire.available() && i<size)
     {
-        buffer[i++]=Wire.read();//è¯»å–æ•°æ®
+        buffer[i++]=Wire.read();//¶ÁÈ¡Êı¾İ
     }
 }
 
-// MPU6050å†™å…¥å‡½æ•°
-//ç”¨äºå‘I2Cè®¾å¤‡å‘é€å¤šä¸ªå­—èŠ‚çš„æ•°æ®
-//å‚æ•°:
-//start : èµ·å§‹åœ°å€ï¼Œç”¨æ¥å®šä¹‰å¯„å­˜å™¨
-//pData : æŒ‡å‘è¦å†™å…¥æ•°æ®çš„æŒ‡é’ˆ
-//size: è¦å†™å…¥çš„å­—èŠ‚æ•°
+// MPU6050Ğ´Èëº¯Êı
+//ÓÃÓÚÏòI2CÉè±¸·¢ËÍ¶à¸ö×Ö½ÚµÄÊı¾İ
+//²ÎÊı:
+//start : ÆğÊ¼µØÖ·£¬ÓÃÀ´¶¨Òå¼Ä´æÆ÷
+//pData : Ö¸ÏòÒªĞ´ÈëÊı¾İµÄÖ¸Õë
+//size: ÒªĞ´ÈëµÄ×Ö½ÚÊı
 void MPU6050::Write(int start, const uint8_t *pData, int size)
 {
     Wire.beginTransmission(MPU6050_I2C_ADDRESS);
-    Wire.write(start);        //å‘é€èµ·å§‹åœ°å€
-    Wire.write(pData, size);  //å‘é€æ•°æ®å­—èŠ‚
-    Wire.endTransmission(true); //é‡Šæ”¾I2Cæ€»çº¿
+    Wire.write(start);        //·¢ËÍÆğÊ¼µØÖ·
+    Wire.write(pData, size);  //·¢ËÍÊı¾İ×Ö½Ú
+    Wire.endTransmission(true); //ÊÍ·ÅI2C×ÜÏß
 }

@@ -4,55 +4,64 @@
 	<Project>
 		<Option title="LiteMultiCopter" />
 		<Option pch_mode="2" />
-		<Option compiler="avrgcc" />
+		<Option compiler="gcc" />
 		<Build>
 			<Target title="Simulator - Debug">
-				<Option output="LiteMultiCopter.exe" prefix_auto="1" extension_auto="0" />
+				<Option output="build/LiteMultiCopter_sim.exe" prefix_auto="1" extension_auto="0" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="GCC" />
 				<Compiler>
 					<Add option="-g" />
 					<Add option="-DF_CPU=16000000L" />
-					<Add option="-DARDUINO=103" />
 					<Add option="-DARDUSIM" />
-					<Add option="-DENABLE_API_NAME" />
-					<Add option="-D__AVR_ATmega328P__" />
+					<Add option="-D__AVR_ATmega2560__" />
+					<Add option="-x c++" />
 					<Add directory="$(ARDUINO_DIR)/arduino/cores" />
 					<Add directory="$(ARDUINO_DIR)/arduino/variants/standard" />
 					<Add directory="$(ARDUINO_DIR)/include" />
 				</Compiler>
+				<Linker>
+					<Add option="-lardusim" />
+				</Linker>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\ardusim" />
+					<Variable name="ARDUINO_DIR" value="$(APP_PATH)/ardusim" />
 				</Environment>
 			</Target>
 			<Target title="Simulator - Release">
-				<Option output="LiteMultiCopter.exe" prefix_auto="1" extension_auto="0" />
+				<Option output="build/LiteMultiCopter_sim.exe" prefix_auto="1" extension_auto="0" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="GCC" />
 				<Compiler>
-					<Add option="-Os" />
+					<Add option="-O2" />
 					<Add option="-DF_CPU=16000000L" />
-					<Add option="-DARDUINO=103" />
 					<Add option="-DARDUSIM" />
-					<Add option="-DENABLE_API_NAME" />
-					<Add option="-D__AVR_ATmega328P__" />
+					<Add option="-D__AVR_ATmega2560__" />
+					<Add option="-x c++" />
 					<Add directory="$(ARDUINO_DIR)/arduino/cores" />
 					<Add directory="$(ARDUINO_DIR)/arduino/variants/standard" />
 					<Add directory="$(ARDUINO_DIR)/include" />
 				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-lardusim" />
+				</Linker>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\ardusim" />
+					<Variable name="ARDUINO_DIR" value="$(APP_PATH)/ardusim" />
 				</Environment>
 			</Target>
 			<Target title="Arduino Uno">
-				<Option output="bin/Release/LiteMultiCopter.elf" prefix_auto="1" extension_auto="0" />
+				<Option output="build/LiteMultiCopter_${BOARD_ID}.elf" prefix_auto="1" extension_auto="0" />
+				<Option object_output="build" />
 				<Option type="1" />
 				<Option compiler="avrgcc" />
 				<Compiler>
+					<Add option="-x c++" />
 					<Add option="-mmcu=$(MCU)" />
+					<Add option="-DF_CPU=16000000L" />
 					<Add option="-D__AVR_ATmega328P__" />
+					<Add option="-O2" />
 					<Add option="-Os" />
 					<Add directory="$(ARDUINO_DIR)/hardware/arduino/cores/arduino" />
 					<Add directory="$(ARDUINO_DIR)/libraries" />
@@ -60,30 +69,38 @@
 				</Compiler>
 				<Linker>
 					<Add option="-mmcu=$(MCU)" />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option="-s" />
 				</Linker>
 				<ExtraCommands>
-					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
-					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size --mcu=$(MCU) --format=avr $(TARGET_OUTPUT_FILE)" />
+					<Add before='$(TARGET_COMPILER_DIR)ArduinoUploader &quot;$(PROJECT_DIR).&quot; $(BOARD_ID) - $(MCU_CLOCK) 0 &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot; &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add after='avr-objcopy -O ihex -R .eeprom -R .eesafe &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).hex&quot;' />
+					<Add after='avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).eep.hex&quot;' />
+					<Add after='avr-size --mcu=$(MCU) --format=avr &quot;$(TARGET_OUTPUT_FILE)&quot;' />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\arduino" />
 					<Variable name="BOARD" value="Arduino Uno" />
-					<Variable name="BOARD_INDEX" value="1" />
+					<Variable name="BOARD_ID" value="uno" />
 					<Variable name="MCU" value="atmega328p" />
+					<Variable name="MCU_CLOCK" value="16" />
 					<Variable name="UPLOAD_BAUDRATE" value="115200" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
 			</Target>
 			<Target title="Arduino Leonardo">
-				<Option output="bin/Release/LiteMultiCopter.elf" prefix_auto="1" extension_auto="0" />
+				<Option output="build/LiteMultiCopter_${BOARD_ID}.elf" prefix_auto="1" extension_auto="0" />
+				<Option object_output="build" />
 				<Option type="1" />
 				<Option compiler="avrgcc" />
 				<Compiler>
+					<Add option="-x c++" />
 					<Add option="-mmcu=$(MCU)" />
+					<Add option="-DF_CPU=16000000L" />
 					<Add option="-D__AVR_ATmega32U4__" />
 					<Add option="-DUSB_VID=0x2341" />
 					<Add option="-DUSB_PID=0x8036" />
+					<Add option="-O2" />
 					<Add option="-Os" />
 					<Add directory="$(ARDUINO_DIR)/hardware/arduino/cores/arduino" />
 					<Add directory="$(ARDUINO_DIR)/libraries" />
@@ -91,30 +108,38 @@
 				</Compiler>
 				<Linker>
 					<Add option="-mmcu=$(MCU)" />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option="-s" />
 				</Linker>
 				<ExtraCommands>
-					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
-					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size --mcu=$(MCU) --format=avr $(TARGET_OUTPUT_FILE)" />
+					<Add before='$(TARGET_COMPILER_DIR)ArduinoUploader &quot;$(PROJECT_DIR).&quot; $(BOARD_ID) - $(MCU_CLOCK) 0 &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot; &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add after='avr-objcopy -O ihex -R .eeprom -R .eesafe &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).hex&quot;' />
+					<Add after='avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).eep.hex&quot;' />
+					<Add after='avr-size --mcu=$(MCU) --format=avr &quot;$(TARGET_OUTPUT_FILE)&quot;' />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\arduino" />
 					<Variable name="BOARD" value="Arduino Leonardo" />
-					<Variable name="BOARD_INDEX" value="2" />
+					<Variable name="BOARD_ID" value="leonardo" />
 					<Variable name="MCU" value="atmega32u4" />
+					<Variable name="MCU_CLOCK" value="16" />
 					<Variable name="UPLOAD_BAUDRATE" value="57600" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
 			</Target>
 			<Target title="Arduino Esplora">
-				<Option output="bin/Release/LiteMultiCopter.elf" prefix_auto="1" extension_auto="0" />
+				<Option output="build/LiteMultiCopter_${BOARD_ID}.elf" prefix_auto="1" extension_auto="0" />
+				<Option object_output="build" />
 				<Option type="1" />
 				<Option compiler="avrgcc" />
 				<Compiler>
+					<Add option="-x c++" />
 					<Add option="-mmcu=$(MCU)" />
+					<Add option="-DF_CPU=16000000L" />
 					<Add option="-D__AVR_ATmega32U4__" />
 					<Add option="-DUSB_VID=0x2341" />
 					<Add option="-DUSB_PID=0x8037" />
+					<Add option="-O2" />
 					<Add option="-Os" />
 					<Add directory="$(ARDUINO_DIR)/hardware/arduino/cores/arduino" />
 					<Add directory="$(ARDUINO_DIR)/libraries" />
@@ -122,30 +147,38 @@
 				</Compiler>
 				<Linker>
 					<Add option="-mmcu=$(MCU)" />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option="-s" />
 				</Linker>
 				<ExtraCommands>
-					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
-					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size --mcu=$(MCU) --format=avr $(TARGET_OUTPUT_FILE)" />
+					<Add before='$(TARGET_COMPILER_DIR)ArduinoUploader &quot;$(PROJECT_DIR).&quot; $(BOARD_ID) - $(MCU_CLOCK) 0 &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot; &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add after='avr-objcopy -O ihex -R .eeprom -R .eesafe &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).hex&quot;' />
+					<Add after='avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).eep.hex&quot;' />
+					<Add after='avr-size --mcu=$(MCU) --format=avr &quot;$(TARGET_OUTPUT_FILE)&quot;' />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\arduino" />
 					<Variable name="BOARD" value="Arduino Esplora" />
-					<Variable name="BOARD_INDEX" value="3" />
+					<Variable name="BOARD_ID" value="esplora" />
 					<Variable name="MCU" value="atmega32u4" />
+					<Variable name="MCU_CLOCK" value="16" />
 					<Variable name="UPLOAD_BAUDRATE" value="57600" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
 			</Target>
 			<Target title="Arduino Micro">
-				<Option output="bin/Release/LiteMultiCopter.elf" prefix_auto="1" extension_auto="0" />
+				<Option output="build/LiteMultiCopter_${BOARD_ID}.elf" prefix_auto="1" extension_auto="0" />
+				<Option object_output="build" />
 				<Option type="1" />
 				<Option compiler="avrgcc" />
 				<Compiler>
+					<Add option="-x c++" />
 					<Add option="-mmcu=$(MCU)" />
+					<Add option="-DF_CPU=16000000L" />
 					<Add option="-D__AVR_ATmega32U4__" />
 					<Add option="-DUSB_VID=0x2341" />
 					<Add option="-DUSB_PID=0x803C" />
+					<Add option="-O2" />
 					<Add option="-Os" />
 					<Add directory="$(ARDUINO_DIR)/hardware/arduino/cores/arduino" />
 					<Add directory="$(ARDUINO_DIR)/libraries" />
@@ -153,28 +186,36 @@
 				</Compiler>
 				<Linker>
 					<Add option="-mmcu=$(MCU)" />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option="-s" />
 				</Linker>
 				<ExtraCommands>
-					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
-					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size --mcu=$(MCU) --format=avr $(TARGET_OUTPUT_FILE)" />
+					<Add before='$(TARGET_COMPILER_DIR)ArduinoUploader &quot;$(PROJECT_DIR).&quot; $(BOARD_ID) - $(MCU_CLOCK) 0 &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot; &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add after='avr-objcopy -O ihex -R .eeprom -R .eesafe &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).hex&quot;' />
+					<Add after='avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).eep.hex&quot;' />
+					<Add after='avr-size --mcu=$(MCU) --format=avr &quot;$(TARGET_OUTPUT_FILE)&quot;' />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\arduino" />
 					<Variable name="BOARD" value="Arduino Micro" />
-					<Variable name="BOARD_INDEX" value="4" />
+					<Variable name="BOARD_ID" value="micro" />
 					<Variable name="MCU" value="atmega32u4" />
+					<Variable name="MCU_CLOCK" value="16" />
 					<Variable name="UPLOAD_BAUDRATE" value="57600" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
 			</Target>
 			<Target title="Arduino Duemilanove (328)">
-				<Option output="bin/Release/LiteMultiCopter.elf" prefix_auto="1" extension_auto="0" />
+				<Option output="build/LiteMultiCopter_${BOARD_ID}.elf" prefix_auto="1" extension_auto="0" />
+				<Option object_output="build" />
 				<Option type="1" />
 				<Option compiler="avrgcc" />
 				<Compiler>
+					<Add option="-x c++" />
 					<Add option="-mmcu=$(MCU)" />
+					<Add option="-DF_CPU=16000000L" />
 					<Add option="-D__AVR_ATmega328P__" />
+					<Add option="-O2" />
 					<Add option="-Os" />
 					<Add directory="$(ARDUINO_DIR)/hardware/arduino/cores/arduino" />
 					<Add directory="$(ARDUINO_DIR)/libraries" />
@@ -182,28 +223,36 @@
 				</Compiler>
 				<Linker>
 					<Add option="-mmcu=$(MCU)" />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option="-s" />
 				</Linker>
 				<ExtraCommands>
-					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
-					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size --mcu=$(MCU) --format=avr $(TARGET_OUTPUT_FILE)" />
+					<Add before='$(TARGET_COMPILER_DIR)ArduinoUploader &quot;$(PROJECT_DIR).&quot; $(BOARD_ID) - $(MCU_CLOCK) 0 &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot; &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add after='avr-objcopy -O ihex -R .eeprom -R .eesafe &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).hex&quot;' />
+					<Add after='avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).eep.hex&quot;' />
+					<Add after='avr-size --mcu=$(MCU) --format=avr &quot;$(TARGET_OUTPUT_FILE)&quot;' />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\arduino" />
 					<Variable name="BOARD" value="Arduino Duemilanove (328)" />
-					<Variable name="BOARD_INDEX" value="5" />
+					<Variable name="BOARD_ID" value="duemilanove328" />
 					<Variable name="MCU" value="atmega328p" />
+					<Variable name="MCU_CLOCK" value="16" />
 					<Variable name="UPLOAD_BAUDRATE" value="57600" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
 			</Target>
 			<Target title="Arduino Duemilanove (168)">
-				<Option output="bin/Release/LiteMultiCopter.elf" prefix_auto="1" extension_auto="0" />
+				<Option output="build/LiteMultiCopter_${BOARD_ID}.elf" prefix_auto="1" extension_auto="0" />
+				<Option object_output="build" />
 				<Option type="1" />
 				<Option compiler="avrgcc" />
 				<Compiler>
+					<Add option="-x c++" />
 					<Add option="-mmcu=$(MCU)" />
+					<Add option="-DF_CPU=16000000L" />
 					<Add option="-D__AVR_ATmega168__" />
+					<Add option="-O2" />
 					<Add option="-Os" />
 					<Add directory="$(ARDUINO_DIR)/hardware/arduino/cores/arduino" />
 					<Add directory="$(ARDUINO_DIR)/libraries" />
@@ -211,28 +260,36 @@
 				</Compiler>
 				<Linker>
 					<Add option="-mmcu=$(MCU)" />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option="-s" />
 				</Linker>
 				<ExtraCommands>
-					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
-					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size --mcu=$(MCU) --format=avr $(TARGET_OUTPUT_FILE)" />
+					<Add before='$(TARGET_COMPILER_DIR)ArduinoUploader &quot;$(PROJECT_DIR).&quot; $(BOARD_ID) - $(MCU_CLOCK) 0 &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot; &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add after='avr-objcopy -O ihex -R .eeprom -R .eesafe &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).hex&quot;' />
+					<Add after='avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).eep.hex&quot;' />
+					<Add after='avr-size --mcu=$(MCU) --format=avr &quot;$(TARGET_OUTPUT_FILE)&quot;' />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\arduino" />
 					<Variable name="BOARD" value="Arduino Duemilanove (168)" />
-					<Variable name="BOARD_INDEX" value="6" />
+					<Variable name="BOARD_ID" value="duemilanove168" />
 					<Variable name="MCU" value="atmega168" />
+					<Variable name="MCU_CLOCK" value="16" />
 					<Variable name="UPLOAD_BAUDRATE" value="19200" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
 			</Target>
 			<Target title="Arduino Nano (328)">
-				<Option output="bin/Release/LiteMultiCopter.elf" prefix_auto="1" extension_auto="0" />
+				<Option output="build/LiteMultiCopter_${BOARD_ID}.elf" prefix_auto="1" extension_auto="0" />
+				<Option object_output="build" />
 				<Option type="1" />
 				<Option compiler="avrgcc" />
 				<Compiler>
+					<Add option="-x c++" />
 					<Add option="-mmcu=$(MCU)" />
+					<Add option="-DF_CPU=16000000L" />
 					<Add option="-D__AVR_ATmega328P__" />
+					<Add option="-O2" />
 					<Add option="-Os" />
 					<Add directory="$(ARDUINO_DIR)/hardware/arduino/cores/arduino" />
 					<Add directory="$(ARDUINO_DIR)/libraries" />
@@ -240,28 +297,36 @@
 				</Compiler>
 				<Linker>
 					<Add option="-mmcu=$(MCU)" />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option="-s" />
 				</Linker>
 				<ExtraCommands>
-					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
-					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size --mcu=$(MCU) --format=avr $(TARGET_OUTPUT_FILE)" />
+					<Add before='$(TARGET_COMPILER_DIR)ArduinoUploader &quot;$(PROJECT_DIR).&quot; $(BOARD_ID) - $(MCU_CLOCK) 0 &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot; &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add after='avr-objcopy -O ihex -R .eeprom -R .eesafe &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).hex&quot;' />
+					<Add after='avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).eep.hex&quot;' />
+					<Add after='avr-size --mcu=$(MCU) --format=avr &quot;$(TARGET_OUTPUT_FILE)&quot;' />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\arduino" />
 					<Variable name="BOARD" value="Arduino Nano (328)" />
-					<Variable name="BOARD_INDEX" value="7" />
+					<Variable name="BOARD_ID" value="nano328" />
 					<Variable name="MCU" value="atmega328p" />
+					<Variable name="MCU_CLOCK" value="16" />
 					<Variable name="UPLOAD_BAUDRATE" value="57600" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
 			</Target>
 			<Target title="Arduino Nano (168)">
-				<Option output="bin/Release/LiteMultiCopter.elf" prefix_auto="1" extension_auto="0" />
+				<Option output="build/LiteMultiCopter_${BOARD_ID}.elf" prefix_auto="1" extension_auto="0" />
+				<Option object_output="build" />
 				<Option type="1" />
 				<Option compiler="avrgcc" />
 				<Compiler>
+					<Add option="-x c++" />
 					<Add option="-mmcu=$(MCU)" />
+					<Add option="-DF_CPU=16000000L" />
 					<Add option="-D__AVR_ATmega168__" />
+					<Add option="-O2" />
 					<Add option="-Os" />
 					<Add directory="$(ARDUINO_DIR)/hardware/arduino/cores/arduino" />
 					<Add directory="$(ARDUINO_DIR)/libraries" />
@@ -269,28 +334,36 @@
 				</Compiler>
 				<Linker>
 					<Add option="-mmcu=$(MCU)" />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option="-s" />
 				</Linker>
 				<ExtraCommands>
-					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
-					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size --mcu=$(MCU) --format=avr $(TARGET_OUTPUT_FILE)" />
+					<Add before='$(TARGET_COMPILER_DIR)ArduinoUploader &quot;$(PROJECT_DIR).&quot; $(BOARD_ID) - $(MCU_CLOCK) 0 &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot; &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add after='avr-objcopy -O ihex -R .eeprom -R .eesafe &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).hex&quot;' />
+					<Add after='avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).eep.hex&quot;' />
+					<Add after='avr-size --mcu=$(MCU) --format=avr &quot;$(TARGET_OUTPUT_FILE)&quot;' />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\arduino" />
 					<Variable name="BOARD" value="Arduino Nano (168)" />
-					<Variable name="BOARD_INDEX" value="8" />
+					<Variable name="BOARD_ID" value="nano168" />
 					<Variable name="MCU" value="atmega168" />
+					<Variable name="MCU_CLOCK" value="16" />
 					<Variable name="UPLOAD_BAUDRATE" value="19200" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
 			</Target>
 			<Target title="Arduino Mini (328)">
-				<Option output="bin/Release/LiteMultiCopter.elf" prefix_auto="1" extension_auto="0" />
+				<Option output="build/LiteMultiCopter_${BOARD_ID}.elf" prefix_auto="1" extension_auto="0" />
+				<Option object_output="build" />
 				<Option type="1" />
 				<Option compiler="avrgcc" />
 				<Compiler>
+					<Add option="-x c++" />
 					<Add option="-mmcu=$(MCU)" />
+					<Add option="-DF_CPU=16000000L" />
 					<Add option="-D__AVR_ATmega328P__" />
+					<Add option="-O2" />
 					<Add option="-Os" />
 					<Add directory="$(ARDUINO_DIR)/hardware/arduino/cores/arduino" />
 					<Add directory="$(ARDUINO_DIR)/libraries" />
@@ -298,28 +371,36 @@
 				</Compiler>
 				<Linker>
 					<Add option="-mmcu=$(MCU)" />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option="-s" />
 				</Linker>
 				<ExtraCommands>
-					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
-					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size --mcu=$(MCU) --format=avr $(TARGET_OUTPUT_FILE)" />
+					<Add before='$(TARGET_COMPILER_DIR)ArduinoUploader &quot;$(PROJECT_DIR).&quot; $(BOARD_ID) - $(MCU_CLOCK) 0 &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot; &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add after='avr-objcopy -O ihex -R .eeprom -R .eesafe &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).hex&quot;' />
+					<Add after='avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).eep.hex&quot;' />
+					<Add after='avr-size --mcu=$(MCU) --format=avr &quot;$(TARGET_OUTPUT_FILE)&quot;' />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\arduino" />
 					<Variable name="BOARD" value="Arduino Mini (328)" />
-					<Variable name="BOARD_INDEX" value="9" />
+					<Variable name="BOARD_ID" value="mini328" />
 					<Variable name="MCU" value="atmega328p" />
+					<Variable name="MCU_CLOCK" value="16" />
 					<Variable name="UPLOAD_BAUDRATE" value="57600" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
 			</Target>
 			<Target title="Arduino Mini (168)">
-				<Option output="bin/Release/LiteMultiCopter.elf" prefix_auto="1" extension_auto="0" />
+				<Option output="build/LiteMultiCopter_${BOARD_ID}.elf" prefix_auto="1" extension_auto="0" />
+				<Option object_output="build" />
 				<Option type="1" />
 				<Option compiler="avrgcc" />
 				<Compiler>
+					<Add option="-x c++" />
 					<Add option="-mmcu=$(MCU)" />
+					<Add option="-DF_CPU=16000000L" />
 					<Add option="-D__AVR_ATmega168__" />
+					<Add option="-O2" />
 					<Add option="-Os" />
 					<Add directory="$(ARDUINO_DIR)/hardware/arduino/cores/arduino" />
 					<Add directory="$(ARDUINO_DIR)/libraries" />
@@ -327,28 +408,36 @@
 				</Compiler>
 				<Linker>
 					<Add option="-mmcu=$(MCU)" />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option="-s" />
 				</Linker>
 				<ExtraCommands>
-					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
-					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size --mcu=$(MCU) --format=avr $(TARGET_OUTPUT_FILE)" />
+					<Add before='$(TARGET_COMPILER_DIR)ArduinoUploader &quot;$(PROJECT_DIR).&quot; $(BOARD_ID) - $(MCU_CLOCK) 0 &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot; &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add after='avr-objcopy -O ihex -R .eeprom -R .eesafe &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).hex&quot;' />
+					<Add after='avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).eep.hex&quot;' />
+					<Add after='avr-size --mcu=$(MCU) --format=avr &quot;$(TARGET_OUTPUT_FILE)&quot;' />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\arduino" />
 					<Variable name="BOARD" value="Arduino Mini (168)" />
-					<Variable name="BOARD_INDEX" value="10" />
+					<Variable name="BOARD_ID" value="mini168" />
 					<Variable name="MCU" value="atmega168" />
+					<Variable name="MCU_CLOCK" value="16" />
 					<Variable name="UPLOAD_BAUDRATE" value="19200" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
 			</Target>
 			<Target title="Arduino Pro Mini (328)">
-				<Option output="bin/Release/LiteMultiCopter.elf" prefix_auto="1" extension_auto="0" />
+				<Option output="build/LiteMultiCopter_${BOARD_ID}.elf" prefix_auto="1" extension_auto="0" />
+				<Option object_output="build" />
 				<Option type="1" />
 				<Option compiler="avrgcc" />
 				<Compiler>
+					<Add option="-x c++" />
 					<Add option="-mmcu=$(MCU)" />
+					<Add option="-DF_CPU=16000000L" />
 					<Add option="-D__AVR_ATmega328P__" />
+					<Add option="-O2" />
 					<Add option="-Os" />
 					<Add directory="$(ARDUINO_DIR)/hardware/arduino/cores/arduino" />
 					<Add directory="$(ARDUINO_DIR)/libraries" />
@@ -356,28 +445,36 @@
 				</Compiler>
 				<Linker>
 					<Add option="-mmcu=$(MCU)" />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option="-s" />
 				</Linker>
 				<ExtraCommands>
-					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
-					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size --mcu=$(MCU) --format=avr $(TARGET_OUTPUT_FILE)" />
+					<Add before='$(TARGET_COMPILER_DIR)ArduinoUploader &quot;$(PROJECT_DIR).&quot; $(BOARD_ID) - $(MCU_CLOCK) 0 &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot; &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add after='avr-objcopy -O ihex -R .eeprom -R .eesafe &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).hex&quot;' />
+					<Add after='avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).eep.hex&quot;' />
+					<Add after='avr-size --mcu=$(MCU) --format=avr &quot;$(TARGET_OUTPUT_FILE)&quot;' />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\arduino" />
 					<Variable name="BOARD" value="Arduino Pro Mini (328)" />
-					<Variable name="BOARD_INDEX" value="11" />
+					<Variable name="BOARD_ID" value="promini328" />
 					<Variable name="MCU" value="atmega328p" />
+					<Variable name="MCU_CLOCK" value="16" />
 					<Variable name="UPLOAD_BAUDRATE" value="57600" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
 			</Target>
 			<Target title="Arduino Pro Mini (168)">
-				<Option output="bin/Release/LiteMultiCopter.elf" prefix_auto="1" extension_auto="0" />
+				<Option output="build/LiteMultiCopter_${BOARD_ID}.elf" prefix_auto="1" extension_auto="0" />
+				<Option object_output="build" />
 				<Option type="1" />
 				<Option compiler="avrgcc" />
 				<Compiler>
+					<Add option="-x c++" />
 					<Add option="-mmcu=$(MCU)" />
+					<Add option="-DF_CPU=16000000L" />
 					<Add option="-D__AVR_ATmega168__" />
+					<Add option="-O2" />
 					<Add option="-Os" />
 					<Add directory="$(ARDUINO_DIR)/hardware/arduino/cores/arduino" />
 					<Add directory="$(ARDUINO_DIR)/libraries" />
@@ -385,27 +482,34 @@
 				</Compiler>
 				<Linker>
 					<Add option="-mmcu=$(MCU)" />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option="-s" />
 				</Linker>
 				<ExtraCommands>
-					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
-					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size --mcu=$(MCU) --format=avr $(TARGET_OUTPUT_FILE)" />
+					<Add before='$(TARGET_COMPILER_DIR)ArduinoUploader &quot;$(PROJECT_DIR).&quot; $(BOARD_ID) - $(MCU_CLOCK) 0 &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot; &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add after='avr-objcopy -O ihex -R .eeprom -R .eesafe &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).hex&quot;' />
+					<Add after='avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).eep.hex&quot;' />
+					<Add after='avr-size --mcu=$(MCU) --format=avr &quot;$(TARGET_OUTPUT_FILE)&quot;' />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\arduino" />
 					<Variable name="BOARD" value="Arduino Pro Mini (168)" />
-					<Variable name="BOARD_INDEX" value="12" />
+					<Variable name="BOARD_ID" value="promini168" />
 					<Variable name="MCU" value="atmega168" />
+					<Variable name="MCU_CLOCK" value="16" />
 					<Variable name="UPLOAD_BAUDRATE" value="19200" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
 			</Target>
 			<Target title="Arduino Mega 2560/ADK">
-				<Option output="bin/Release/LiteMultiCopter.elf" prefix_auto="1" extension_auto="0" />
+				<Option output="build/LiteMultiCopter_${BOARD_ID}.elf" prefix_auto="1" extension_auto="0" />
+				<Option object_output="build" />
 				<Option type="1" />
 				<Option compiler="avrgcc" />
 				<Compiler>
+					<Add option="-x c++" />
 					<Add option="-mmcu=$(MCU)" />
+					<Add option="-DF_CPU=16000000L" />
 					<Add option="-D__AVR_ATmega2560__" />
 					<Add option="-O2" />
 					<Add directory="$(ARDUINO_DIR)/hardware/arduino/cores/arduino" />
@@ -414,27 +518,34 @@
 				</Compiler>
 				<Linker>
 					<Add option="-mmcu=$(MCU)" />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option="-s" />
 				</Linker>
 				<ExtraCommands>
-					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
-					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size --mcu=$(MCU) --format=avr $(TARGET_OUTPUT_FILE)" />
+					<Add before='$(TARGET_COMPILER_DIR)ArduinoUploader &quot;$(PROJECT_DIR).&quot; $(BOARD_ID) - $(MCU_CLOCK) 0 &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot; &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add after='avr-objcopy -O ihex -R .eeprom -R .eesafe &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).hex&quot;' />
+					<Add after='avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).eep.hex&quot;' />
+					<Add after='avr-size --mcu=$(MCU) --format=avr &quot;$(TARGET_OUTPUT_FILE)&quot;' />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\arduino" />
-					<Variable name="BOARD" value="Arduino Mega 2560\ADK" />
-					<Variable name="BOARD_INDEX" value="13" />
+					<Variable name="BOARD" value="Arduino Mega 2560/ADK" />
+					<Variable name="BOARD_ID" value="mega2560" />
 					<Variable name="MCU" value="atmega2560" />
+					<Variable name="MCU_CLOCK" value="16" />
 					<Variable name="UPLOAD_BAUDRATE" value="57600" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
 			</Target>
 			<Target title="Arduino Mega 1280">
-				<Option output="bin/Release/LiteMultiCopter.elf" prefix_auto="1" extension_auto="0" />
+				<Option output="build/LiteMultiCopter_${BOARD_ID}.elf" prefix_auto="1" extension_auto="0" />
+				<Option object_output="build" />
 				<Option type="1" />
 				<Option compiler="avrgcc" />
 				<Compiler>
+					<Add option="-x c++" />
 					<Add option="-mmcu=$(MCU)" />
+					<Add option="-DF_CPU=16000000L" />
 					<Add option="-D__AVR_ATmega1280__" />
 					<Add option="-O2" />
 					<Add directory="$(ARDUINO_DIR)/hardware/arduino/cores/arduino" />
@@ -443,28 +554,36 @@
 				</Compiler>
 				<Linker>
 					<Add option="-mmcu=$(MCU)" />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option="-s" />
 				</Linker>
 				<ExtraCommands>
-					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
-					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size --mcu=$(MCU) --format=avr $(TARGET_OUTPUT_FILE)" />
+					<Add before='$(TARGET_COMPILER_DIR)ArduinoUploader &quot;$(PROJECT_DIR).&quot; $(BOARD_ID) - $(MCU_CLOCK) 0 &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot; &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add after='avr-objcopy -O ihex -R .eeprom -R .eesafe &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).hex&quot;' />
+					<Add after='avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).eep.hex&quot;' />
+					<Add after='avr-size --mcu=$(MCU) --format=avr &quot;$(TARGET_OUTPUT_FILE)&quot;' />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\arduino" />
 					<Variable name="BOARD" value="Arduino Mega 1280" />
-					<Variable name="BOARD_INDEX" value="14" />
+					<Variable name="BOARD_ID" value="mega1280" />
 					<Variable name="MCU" value="atmega1280" />
+					<Variable name="MCU_CLOCK" value="16" />
 					<Variable name="UPLOAD_BAUDRATE" value="57600" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
 			</Target>
 			<Target title="Arduino Mega 8">
-				<Option output="bin/Release/LiteMultiCopter.elf" prefix_auto="1" extension_auto="0" />
+				<Option output="build/LiteMultiCopter_${BOARD_ID}.elf" prefix_auto="1" extension_auto="0" />
+				<Option object_output="build" />
 				<Option type="1" />
 				<Option compiler="avrgcc" />
 				<Compiler>
+					<Add option="-x c++" />
 					<Add option="-mmcu=$(MCU)" />
+					<Add option="-DF_CPU=16000000L" />
 					<Add option="-D__AVR_ATmega328P__" />
+					<Add option="-O2" />
 					<Add option="-Os" />
 					<Add directory="$(ARDUINO_DIR)/hardware/arduino/cores/arduino" />
 					<Add directory="$(ARDUINO_DIR)/libraries" />
@@ -472,73 +591,102 @@
 				</Compiler>
 				<Linker>
 					<Add option="-mmcu=$(MCU)" />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option="-s" />
 				</Linker>
 				<ExtraCommands>
-					<Add after="avr-objcopy -O ihex -R .eeprom -R .eesafe $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).hex" />
-					<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_FILE).eep.hex" />
-					<Add after="avr-size --mcu=$(MCU) --format=avr $(TARGET_OUTPUT_FILE)" />
+					<Add before='$(TARGET_COMPILER_DIR)ArduinoUploader &quot;$(PROJECT_DIR).&quot; $(BOARD_ID) - $(MCU_CLOCK) 0 &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot; &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add after='avr-objcopy -O ihex -R .eeprom -R .eesafe &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).hex&quot;' />
+					<Add after='avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).eep.hex&quot;' />
+					<Add after='avr-size --mcu=$(MCU) --format=avr &quot;$(TARGET_OUTPUT_FILE)&quot;' />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\arduino" />
 					<Variable name="BOARD" value="Arduino Mega 8" />
-					<Variable name="BOARD_INDEX" value="15" />
+					<Variable name="BOARD_ID" value="mega8" />
 					<Variable name="MCU" value="atmega8" />
+					<Variable name="MCU_CLOCK" value="16" />
 					<Variable name="UPLOAD_BAUDRATE" value="19200" />
+					<Variable name="UPLOAD_PORT" value="" />
+				</Environment>
+			</Target>
+			<Target title="Microduino Core+ (644P)">
+				<Option output="build/LiteMultiCopter_${BOARD_ID}.elf" prefix_auto="1" extension_auto="0" />
+				<Option object_output="build" />
+				<Option type="1" />
+				<Option compiler="avrgcc" />
+				<Compiler>
+					<Add option="-x c++" />
+					<Add option="-mmcu=$(MCU)" />
+					<Add option="-DF_CPU=16000000L" />
+					<Add option="-D__AVR_ATmega644P__" />
+					<Add option="-O2" />
+					<Add option="-Os" />
+					<Add directory="$(ARDUINO_DIR)/hardware/arduino/cores/arduino" />
+					<Add directory="$(ARDUINO_DIR)/libraries" />
+					<Add directory="$(ARDUINO_DIR)/hardware/arduino/variants/plus" />
+				</Compiler>
+				<Linker>
+					<Add option="-mmcu=$(MCU)" />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option='&quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add option="-s" />
+				</Linker>
+				<ExtraCommands>
+					<Add before='$(TARGET_COMPILER_DIR)ArduinoUploader &quot;$(PROJECT_DIR).&quot; $(BOARD_ID) - $(MCU_CLOCK) 0 &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/lib_${BOARD_ID}_${MCU_CLOCK}.a&quot; &quot;$(PROJECT_DIR)${TARGET_OUTPUT_DIR}/core_${BOARD_ID}_${MCU_CLOCK}.a&quot;' />
+					<Add after='avr-objcopy -O ihex -R .eeprom -R .eesafe &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).hex&quot;' />
+					<Add after='avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex &quot;$(TARGET_OUTPUT_FILE)&quot; &quot;$(TARGET_OUTPUT_FILE).eep.hex&quot;' />
+					<Add after='avr-size --mcu=$(MCU) --format=avr &quot;$(TARGET_OUTPUT_FILE)&quot;' />
+				</ExtraCommands>
+				<Environment>
+					<Variable name="BOARD" value="Microduino Core+ (644P)" />
+					<Variable name="BOARD_ID" value="uduino644p" />
+					<Variable name="MCU" value="atmega644p" />
+					<Variable name="MCU_CLOCK" value="16" />
+					<Variable name="UPLOAD_BAUDRATE" value="115200" />
 					<Variable name="UPLOAD_PORT" value="" />
 				</Environment>
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-x c++" />
-			<Add option="-Wall" />
 			<Add directory="." />
 		</Compiler>
-		<Unit filename="LiteMultiCopter.cpp" />
-		<Unit filename="MPU6050.cpp" />
-		<Unit filename="MPU6050.h" />
-		<Unit filename="MPU6050_RegistersMap.h" />
-		<Unit filename="Motor.cpp" />
-		<Unit filename="Motor.h" />
-		<Unit filename="PID.cpp" />
-		<Unit filename="PID.h" />
-		<Unit filename="Receiver.cpp" />
-		<Unit filename="Receiver.h" />
-		<Unit filename="SerialCom.cpp" />
-		<Unit filename="SerialCom.h" />
-		<Unit filename="cores/CDC.cpp" />
-		<Unit filename="cores/HID.cpp" />
-		<Unit filename="cores/HardwareSerial.cpp" />
-		<Unit filename="cores/IPAddress.cpp" />
-		<Unit filename="cores/Print.cpp" />
-		<Unit filename="cores/Stream.cpp" />
-		<Unit filename="cores/Tone.cpp" />
-		<Unit filename="cores/USBCore.cpp" />
-		<Unit filename="cores/WInterrupts.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="cores/WMath.cpp" />
-		<Unit filename="cores/WString.cpp" />
-		<Unit filename="cores/main.cpp" />
-		<Unit filename="cores/new.cpp" />
-		<Unit filename="cores/wiring.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="cores/wiring_analog.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="cores/wiring_digital.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="cores/wiring_pulse.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="cores/wiring_shift.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="include/config.h">
+		<Unit filename="LiteMultiCopter.cpp">
 			<Option target="Arduino Mega 2560/ADK" />
 		</Unit>
-		<Unit filename="include/libraries.cpp" />
+		<Unit filename="MPU6050.cpp">
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="MPU6050.h">
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="MPU6050_RegistersMap.h">
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="Motor.cpp">
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="Motor.h">
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="PID.cpp">
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="PID.h">
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="Receiver.cpp">
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="Receiver.h">
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="SerialCom.cpp">
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
+		<Unit filename="SerialCom.h">
+			<Option target="Arduino Mega 2560/ADK" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<debugger />

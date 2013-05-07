@@ -35,7 +35,7 @@ void Receiver::ReadData()
     }
     RxAil = (ChannelData[0]-1500)/4.0;
     RxEle = (ChannelData[1] -1500)/4.0;
-    RxThr = (ChannelData[2]-1100)/8.0;
+    RxThr = ChannelData[2];
     RxRud = (ChannelData[3] -1500)/4.0;
 }
 

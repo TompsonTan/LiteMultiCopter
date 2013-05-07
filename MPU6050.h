@@ -54,6 +54,10 @@ public:
     float ReadAccY();
     float ReadAccZ();
 
+    //读取俯仰角和滚转角（由加速度计算出）
+    float ReadPitchAngle();
+    float ReadRollAngle();
+
     //读取角速度
     float ReadGyroX();
     float ReadGyroY();

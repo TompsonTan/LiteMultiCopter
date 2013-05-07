@@ -44,7 +44,7 @@ public:
 
     int ChannelData[4];
 
-    float RxThr;//油门,缩放：0~100.0
+    float RxThr;//油门 1100-1900
     float RxAil,RxEle,RxRud;//副翼、升降舵、方向舵。(与1500相减后的偏差)，再缩放到-100~+100
 
     tPinTimingData pinData[9];
