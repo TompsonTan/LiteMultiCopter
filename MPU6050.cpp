@@ -8,7 +8,7 @@
 
 MPU6050::MPU6050()
 {
-
+    lastGyroY = 1;
 }
 
 void MPU6050::Init()
@@ -59,8 +59,9 @@ float MPU6050::ReadAccZ()
 
 float MPU6050::ReadPitchAngle()
 {
-    float xtoz = ReadAccX()*(1/ReadAccZ());
-    float pitch = atan(xtoz)/3.14*180;
+    float xtoz = ReadAccX()/9.8;
+    //float pitch = acos(xtoz)/3.14*180;
+    float pitch = ReadAccX();
     return pitch;
 }
 
@@ -78,7 +79,12 @@ float MPU6050::ReadGyroX()
 
 float MPU6050::ReadGyroY()
 {
-    return accel_t_gyro.value.y_gyro/131.0;
+    float GyroY = accel_t_gyro.value.y_gyro/131.0-3.5;
+    if(abs(GyroY)>abs(50*lastGyroY))
+        ;
+    else
+        lastGyroY = GyroY;
+    return lastGyroY;
 }
 
 float MPU6050::ReadGyroZ()

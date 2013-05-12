@@ -24,6 +24,7 @@ class Motor
         Servo esc1; //Pin 11
         Servo esc2; //Pin 12
         Servo esc3; //Pin 13
+        float Dterm;
 };
 
 #endif // MOTOR_H

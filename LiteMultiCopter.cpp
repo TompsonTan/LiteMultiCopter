@@ -1,4 +1,4 @@
-#include"Arduino.h"
+ï»¿#include"Arduino.h"
 #include <Wire.h>
 
 #include"MPU6050.h"
@@ -9,32 +9,32 @@
 #define USE_SERIAL 1
 
 
-MPU6050  LMC_Sensor;//¼ÓËÙ¶È/ÍÓÂİÒÇ´«¸ĞÆ÷
-SerialCom LMC_Com;//´®¿ÚÍ¨ĞÅ
-Receiver    LMC_Receiver;//½ÓÊÕ»úĞÅºÅ¶ÁÈ¡
-Motor       LMC_Motor;//µç»ú¿ØÖÆ
+MPU6050  LMC_Sensor;//åŠ é€Ÿåº¦/é™€èºä»ªä¼ æ„Ÿå™¨
+SerialCom LMC_Com;//ä¸²å£é€šä¿¡
+Receiver    LMC_Receiver;//æ¥æ”¶æœºä¿¡å·è¯»å–
+Motor       LMC_Motor;//ç”µæœºæ§åˆ¶
 
-//ÖĞ¶Ï·şÎñº¯Êı£¬ÓÃÀ´¼ì²â½ÓÊÕ»úĞÅºÅ
-/*µ±·¢ÏÖ½ÓÊÕ»úÍ¨µÀµçÆ½±ä»¯Ê±£¬»áÖĞ¶Ïµ±Ç°µÄ¡°½ø³Ì¡±£¬
-Ö´ĞĞÖĞ¶Ï·şÎñº¯Êı£¬¶ÁÈ¡½ÓÊÕ»úµÄĞÅºÅ£¬Íê³ÉÈÎÎñºó·µ»Ø*/
+//ä¸­æ–­æœåŠ¡å‡½æ•°ï¼Œç”¨æ¥æ£€æµ‹æ¥æ”¶æœºä¿¡å·
+/*å½“å‘ç°æ¥æ”¶æœºé€šé“ç”µå¹³å˜åŒ–æ—¶ï¼Œä¼šä¸­æ–­å½“å‰çš„â€œè¿›ç¨‹â€ï¼Œ
+æ‰§è¡Œä¸­æ–­æœåŠ¡å‡½æ•°ï¼Œè¯»å–æ¥æ”¶æœºçš„ä¿¡å·ï¼Œå®Œæˆä»»åŠ¡åè¿”å›*/
 SIGNAL(PCINT2_vect)
 {
     LMC_Receiver.MegaPcIntISR();
 }
 
-//ÍÓÂİÒÇ»ù×¼½¨Á¢
+//é™€èºä»ªåŸºå‡†å»ºç«‹
 #define GYROBASECNT 200
-int GyroBaseCnt=0;			//Gyro base build count ÍÓÂİÒÇÖĞµã½¨Á¢¼ÆÊıÆ÷
+int GyroBaseCnt=0;			//Gyro base build count é™€èºä»ªä¸­ç‚¹å»ºç«‹è®¡æ•°å™¨
 
-//ËÄÖáËø¶¨/½âËøº¯Êı
-bool InLock = true;//³õÊ¼ÎªËø¶¨×´Ì¬
-int ArmCnt = 0;	//Ëø¶¨/½âËø¼ÆÊı
-#define ARMING_TIME 250
-#define STICKGATE 90//Ëø¶¨/½âËø·§Öµ
-int LockLED = A5;//Èô³£ÁÁ£¬ÔòÎªËø¶¨£»ÉÁË¸£¬ÔòÎªÒÑ½âËø
+//å››è½´é”å®š/è§£é”å‡½æ•°
+bool InLock = true;//åˆå§‹ä¸ºé”å®šçŠ¶æ€
+int ArmCnt = 0;	//é”å®š/è§£é”è®¡æ•°
+#define ARMING_TIME 150
+#define STICKGATE 90//é”å®š/è§£é”é˜€å€¼
+int LockLED = A5;//è‹¥å¸¸äº®ï¼Œåˆ™ä¸ºé”å®šï¼›é—ªçƒï¼Œåˆ™ä¸ºå·²è§£é”
 void ArmingRoutine()
 {
-    //Ïû¶¶¶¯,¼ÆÊı´ïµ½·§ÖµµÄÊ±ºòÈÏÎªÖ´ĞĞËø¶¨»ò½âËø
+    //æ¶ˆæŠ–åŠ¨,è®¡æ•°è¾¾åˆ°é˜€å€¼çš„æ—¶å€™è®¤ä¸ºæ‰§è¡Œé”å®šæˆ–è§£é”
     if(abs(LMC_Receiver.RxRud)>85)
         ArmCnt++;
     else
@@ -44,7 +44,7 @@ void ArmingRoutine()
     {
         if(InLock)
         {
-            if(LMC_Receiver.RxRud>STICKGATE)//·½Ïò¶æÏòÓÒ£¬½âËø
+            if(LMC_Receiver.RxRud>STICKGATE)//æ–¹å‘èˆµå‘å³ï¼Œè§£é”
             {
                 InLock = false;
                 GyroBaseCnt=GYROBASECNT;
@@ -52,7 +52,7 @@ void ArmingRoutine()
         }
         else
         {
-            if(LMC_Receiver.RxRud<-STICKGATE)//·½Ïò¶æÏò×ó£¬Ëø¶¨
+            if(LMC_Receiver.RxRud<-STICKGATE)//æ–¹å‘èˆµå‘å·¦ï¼Œé”å®š
                 InLock = true;
         }
     }
@@ -74,20 +74,20 @@ void CalibrateThrottle()
 
 void setup()
 {
-    //³õÊ¼»¯I2C×ÜÏß
+    //åˆå§‹åŒ–I2Cæ€»çº¿
     Wire.begin();
 
 //#if(USE_SERIAL)
-    //³õÊ¼»¯´®¿ÚÍ¨ĞÅ
+    //åˆå§‹åŒ–ä¸²å£é€šä¿¡
     LMC_Com.Init();
-    //ÉèÖÃÆğÊ¼²¨ÌØÂÊ
+    //è®¾ç½®èµ·å§‹æ³¢ç‰¹ç‡
     Serial.begin(9600);
 //#endif
 
-    //³õÊ¼»¯MPU6050
+    //åˆå§‹åŒ–MPU6050
     LMC_Sensor.Init();
 
-    //ÉèÖÃ½ÓÊÕ»úĞÅºÅ¶Ë¿Ú
+    //è®¾ç½®æ¥æ”¶æœºä¿¡å·ç«¯å£
     LMC_Receiver.Init();
 
     pinMode(2, OUTPUT);
@@ -103,25 +103,25 @@ void setup()
 
 void loop()
 {
-    //¶ÁÈ¡/¸üĞÂÍÓÂİÒÇÊı¾İ
+    //è¯»å–/æ›´æ–°é™€èºä»ªæ•°æ®
     LMC_Sensor.ReadData();
 
-    //¶ÁÈ¡/¸üĞÂ½ÓÊÕ»úĞÅºÅ
+    //è¯»å–/æ›´æ–°æ¥æ”¶æœºä¿¡å·
     LMC_Receiver.ReadData();
 
-    //½«ÍÓÂİÒÇºÍ½ÓÊÕ»úĞÅºÅ·¢ËÍµ½´®¿Ú
+    //å°†é™€èºä»ªå’Œæ¥æ”¶æœºä¿¡å·å‘é€åˆ°ä¸²å£
     //LMC_Com.DataToPC(LMC_Sensor,LMC_Receiver);
 
 
-    /******ÏÂÃæ¾ÍÊÇPIDËã·¨ºÍ¸ù¾İPIDµÄ½á¹ûÀ´¿ØÖÆµç»úµÄº¯ÊıÁË******/
+    /******ä¸‹é¢å°±æ˜¯PIDç®—æ³•å’Œæ ¹æ®PIDçš„ç»“æœæ¥æ§åˆ¶ç”µæœºçš„å‡½æ•°äº†******/
 
-    if(LMC_Receiver.RxThr<1200)//ÈôÓÍÃÅµÍÓÚ10%£¬½øÈëËø¶¨/½âËøº¯Êı
+    if(LMC_Receiver.RxThr<1200)//è‹¥æ²¹é—¨ä½äº10%ï¼Œè¿›å…¥é”å®š/è§£é”å‡½æ•°
         ArmingRoutine();
 
-    //¶ÁÈ¡½ÓÊÕ»úĞÅºÅ£¬½á¹ûĞè×ª»»ºó¿ØÖÆµç»ú
+    //è¯»å–æ¥æ”¶æœºä¿¡å·ï¼Œç»“æœéœ€è½¬æ¢åæ§åˆ¶ç”µæœº
     LMC_Motor.CalculateOutput(LMC_Sensor,LMC_Receiver);
 
-    //ÈôÒÑËø¶¨»òÎ´½¨Á¢ÍÓÂİÒÇ»ù×¼£¬½ûÖ¹µç»úÊä³ö
+    //è‹¥å·²é”å®šæˆ–æœªå»ºç«‹é™€èºä»ªåŸºå‡†ï¼Œç¦æ­¢ç”µæœºè¾“å‡º
     if(InLock)
     {
         LMC_Motor.Lock();
@@ -130,15 +130,16 @@ void loop()
     else
     {
         digitalWrite(LockLED,HIGH);
-        //Êä³öµç»ú¿ØÖÆĞÅºÅ
+        //è¾“å‡ºç”µæœºæ§åˆ¶ä¿¡å·
         LMC_Motor.OutPut();
     }
 
-   Serial.println(LMC_Motor.Roll_Offset);
-//    Serial.println(30*LMC_Receiver.RxAil/100.0);
-    //Serial.println(LMC_Sensor.ReadAccX());
-//Serial.println(LMC_Sensor.ReadAccZ());
-  // Serial.println(LMC_Sensor.ReadPitchAngle());
-
-    //delay(500);
+//    Serial.print('H');//å¼€å¤´æ ‡è®°
+//    Serial.print(30*LMC_Receiver.RxEle/100.0);
+//    Serial.print('*');//æ•°æ®åˆ†éš”ç¬¦
+//    Serial.print(LMC_Sensor.ReadGyroY());
+//    Serial.print('*');
+//    Serial.print(LMC_Motor.Dterm);
+//    Serial.print('*');
+//    Serial.print('\n');//ç»“æŸæ ‡è®°
 }

@@ -11,7 +11,7 @@ class PID
         float Calculate(float Ref,float Input);
         void resetITerm();
 
-    private:
+    public:
         long prevTime;
         float prevRef;
         float prevInput;

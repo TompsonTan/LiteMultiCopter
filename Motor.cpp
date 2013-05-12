@@ -5,7 +5,8 @@
 
 #include <Servo.h>
 
-PID Pitch_PID(0.2,0,0),Roll_PID(0.3,0,0),RollAcc_PID(0.2,0,0),Yaw_PID(0.2,0,0);
+PID Pitch_PID(0.5,0,0.005),Roll_PID(0.4,0,0),Yaw_PID(0.4,0,0);
+PID PitchAcc_PID(0.3,0.1,0),RollAcc_PID(0.2,0,0);
 
 Motor::Motor()
 {
@@ -13,26 +14,34 @@ Motor::Motor()
     Front = Back = Left = Right = 0;
 }
 
-//鏍规嵁浼犳劅鍣ㄦ暟鎹拰閬ユ帶鍣ㄤ俊鍙疯绠楀洓涓數鏈虹殑杈撳嚭
+//根据传感器数据和遥控器信号计算四个电机的输出
 void Motor::CalculateOutput(MPU6050  MySensor,Receiver MyReceiver)
 {
     Throttle = MyReceiver.RxThr;
-    Pitch_Offset =Pitch_PID.Calculate(20*MyReceiver.RxEle/100.0,MySensor.ReadGyroY());
-    Roll_Offset = Roll_PID.Calculate(30*MyReceiver.RxAil/100.0,MySensor.ReadRollAngle());
-    Roll_Offset = RollAcc_PID.Calculate(Roll_Offset,MySensor.ReadGyroX());
-    Yaw_Offset = Yaw_PID.Calculate(20*MyReceiver.RxRud/100.0,MySensor.ReadGyroZ());
+    Pitch_Offset =Pitch_PID.Calculate(40*MyReceiver.RxEle/100.0,MySensor.ReadGyroY());
+    Dterm = Pitch_PID.dTerm;
+    //Pitch_Offset =PitchAcc_PID.Calculate(Pitch_Offset,MySensor.ReadGyroY());
 
-    // 鍗佸瓧妯″紡
+    //Roll_Offset = Roll_PID.Calculate(80*MyReceiver.RxAil/100.0,MySensor.ReadGyroX());
+
+    Yaw_Offset = Yaw_PID.Calculate(-70*MyReceiver.RxRud/100.0,MySensor.ReadGyroZ());
+
+    Roll_Offset = Yaw_Offset = 0;
+
+    //AttitudeMode
+    //float rollAttitudeCmd = updatePID((receiverCommand[XAXIS] - receiverZero[XAXIS]) *0.75*0.002 )
+
+    // 十字模式
 	//       Front
 	//   Left + Right
 	//       Back
-    Front = MotorLimitValue(Throttle- Pitch_Offset + Yaw_Offset);
+    Front = MotorLimitValue(Throttle - Pitch_Offset + Yaw_Offset);
     Right = MotorLimitValue(Throttle - Roll_Offset - Yaw_Offset);
     Left = MotorLimitValue(Throttle + Roll_Offset - Yaw_Offset);
     Back = MotorLimitValue(Throttle + Pitch_Offset + Yaw_Offset);
 }
 
-//淇″彿闄愬箙
+//信号限幅
 float Motor::MotorLimitValue(int v)
 {
  	if(v>MaxValue)

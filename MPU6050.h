@@ -63,6 +63,8 @@ public:
     float ReadGyroY();
     float ReadGyroZ();
 
+    float lastGyroY;
+
     //读取温度
     float ReadTemperature();
 
