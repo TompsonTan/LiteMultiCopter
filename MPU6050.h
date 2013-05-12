@@ -1,4 +1,4 @@
-#ifndef MPU6050_H_INCLUDED
+﻿#ifndef MPU6050_H_INCLUDED
 #define MPU6050_H_INCLUDED
 
 #include <Wire.h>

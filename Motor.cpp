@@ -1,4 +1,4 @@
-#include "Motor.h"
+ï»¿#include "Motor.h"
 
 #define MaxValue 1800
 #define MinValue 1092
@@ -14,7 +14,7 @@ Motor::Motor()
     Front = Back = Left = Right = 0;
 }
 
-//¸ù¾Ý´«¸ÐÆ÷Êý¾ÝºÍÒ£¿ØÆ÷ÐÅºÅ¼ÆËãËÄ¸öµç»úµÄÊä³ö
+//æ ¹æ®ä¼ æ„Ÿå™¨æ•°æ®å’Œé¥æŽ§å™¨ä¿¡å·è®¡ç®—å››ä¸ªç”µæœºçš„è¾“å‡º
 void Motor::CalculateOutput(MPU6050  MySensor,Receiver MyReceiver)
 {
     Throttle = MyReceiver.RxThr;
@@ -31,7 +31,7 @@ void Motor::CalculateOutput(MPU6050  MySensor,Receiver MyReceiver)
     //AttitudeMode
     //float rollAttitudeCmd = updatePID((receiverCommand[XAXIS] - receiverZero[XAXIS]) *0.75*0.002 )
 
-    // Ê®×ÖÄ£Ê½
+    // åå­—æ¨¡å¼
 	//       Front
 	//   Left + Right
 	//       Back
@@ -41,7 +41,7 @@ void Motor::CalculateOutput(MPU6050  MySensor,Receiver MyReceiver)
     Back = MotorLimitValue(Throttle + Pitch_Offset + Yaw_Offset);
 }
 
-//ÐÅºÅÏÞ·ù
+//ä¿¡å·é™å¹…
 float Motor::MotorLimitValue(int v)
 {
  	if(v>MaxValue)

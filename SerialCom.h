@@ -1,4 +1,4 @@
-#ifndef SERIALCOM_H_INCLUDED
+﻿#ifndef SERIALCOM_H_INCLUDED
 #define SERIALCOM_H_INCLUDED
 
 #include"Arduino.h"

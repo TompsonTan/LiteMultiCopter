@@ -1,4 +1,4 @@
-#include"SerialCom.h"
+﻿#include"SerialCom.h"
 
 SerialCom::SerialCom()
 {
