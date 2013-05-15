@@ -1,4 +1,4 @@
-﻿#include"Arduino.h"
+#include"Arduino.h"
 #include <Wire.h>
 
 #include"MPU6050.h"
@@ -27,7 +27,7 @@ SIGNAL(PCINT2_vect)
 int GyroBaseCnt=0;			//Gyro base build count 陀螺仪中点建立计数器
 
 //四轴锁定/解锁函数
-bool InLock = true;//初始为锁定状态
+int InLock = 1;//初始为锁定状态
 int ArmCnt = 0;	//锁定/解锁计数
 #define ARMING_TIME 150
 #define STICKGATE 90//锁定/解锁阀值
@@ -46,14 +46,14 @@ void ArmingRoutine()
         {
             if(LMC_Receiver.RxRud>STICKGATE)//方向舵向右，解锁
             {
-                InLock = false;
+                InLock = 0;
                 GyroBaseCnt=GYROBASECNT;
             }
         }
         else
         {
             if(LMC_Receiver.RxRud<-STICKGATE)//方向舵向左，锁定
-                InLock = true;
+                InLock = 1;
         }
     }
 
@@ -66,7 +66,7 @@ void CalibrateThrottle()
     {
         if(LMC_Receiver.RxThr>85)
         {
-            InLock = false;
+            InLock = 0;
             ESC_isCalibrated = true;
         }
     }
@@ -90,7 +90,7 @@ void setup()
     //设置接收机信号端口
     LMC_Receiver.Init();
 
-    pinMode(2, OUTPUT);
+    pinMode(4, OUTPUT);
     pinMode(3, OUTPUT);
     pinMode(5, OUTPUT);
     pinMode(6, OUTPUT);
@@ -135,11 +135,13 @@ void loop()
     }
 
 //    Serial.print('H');//开头标记
-//    Serial.print(30*LMC_Receiver.RxEle/100.0);
+//    Serial.print(LMC_Receiver.RxEle);
 //    Serial.print('*');//数据分隔符
 //    Serial.print(LMC_Sensor.ReadGyroY());
 //    Serial.print('*');
-//    Serial.print(LMC_Motor.Dterm);
+//    Serial.print(LMC_Motor.Throttle);
+//    Serial.print('*');
+//    Serial.print(InLock);
 //    Serial.print('*');
 //    Serial.print('\n');//结束标记
 }

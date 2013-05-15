@@ -1,12 +1,11 @@
-﻿#include "Motor.h"
+#include"Motor.h"
 
 #define MaxValue 1800
 #define MinValue 1092
 
 #include <Servo.h>
 
-PID Pitch_PID(0.5,0,0.005),Roll_PID(0.4,0,0),Yaw_PID(0.4,0,0);
-PID PitchAcc_PID(0.3,0.1,0),RollAcc_PID(0.2,0,0);
+PID Pitch_PID(40,30,23),Roll_PID(40,30,23),Yaw_PID(0.4,0,0);
 
 Motor::Motor()
 {
@@ -18,18 +17,13 @@ Motor::Motor()
 void Motor::CalculateOutput(MPU6050  MySensor,Receiver MyReceiver)
 {
     Throttle = MyReceiver.RxThr;
-    Pitch_Offset =Pitch_PID.Calculate(40*MyReceiver.RxEle/100.0,MySensor.ReadGyroY());
-    Dterm = Pitch_PID.dTerm;
-    //Pitch_Offset =PitchAcc_PID.Calculate(Pitch_Offset,MySensor.ReadGyroY());
+    Pitch_Offset =Pitch_PID.Calculate(MyReceiver.RxEle,MySensor.ReadGyroY());
 
-    //Roll_Offset = Roll_PID.Calculate(80*MyReceiver.RxAil/100.0,MySensor.ReadGyroX());
+    Roll_Offset = Roll_PID.Calculate(80*MyReceiver.RxAil/100.0,MySensor.ReadGyroX());
 
     Yaw_Offset = Yaw_PID.Calculate(-70*MyReceiver.RxRud/100.0,MySensor.ReadGyroZ());
 
     Roll_Offset = Yaw_Offset = 0;
-
-    //AttitudeMode
-    //float rollAttitudeCmd = updatePID((receiverCommand[XAXIS] - receiverZero[XAXIS]) *0.75*0.002 )
 
     // 十字模式
 	//       Front
@@ -71,7 +65,7 @@ void Motor::OutPut()
 void Motor::CalibrateESCs()
 {
 //Attach pins for ESCs (sets motor orientation)
-  esc0.attach(2); //ESC 0 - Pin 11
+  esc0.attach(4); //ESC 0 - Pin 11
   esc1.attach(3); //ESC 1 - Pin 10
   esc2.attach(5); //ESC 2 - Pin 13
   esc3.attach(6); //ESC 3 - Pin 12

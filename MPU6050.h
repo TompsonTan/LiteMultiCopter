@@ -1,4 +1,4 @@
-﻿#ifndef MPU6050_H_INCLUDED
+#ifndef MPU6050_H_INCLUDED
 #define MPU6050_H_INCLUDED
 
 #include <Wire.h>
@@ -54,16 +54,13 @@ public:
     float ReadAccY();
     float ReadAccZ();
 
-    //读取俯仰角和滚转角（由加速度计算出）
-    float ReadPitchAngle();
-    float ReadRollAngle();
-
     //读取角速度
     float ReadGyroX();
     float ReadGyroY();
     float ReadGyroZ();
 
-    float lastGyroY;
+    //记录上一次的角速度值
+    float lastGyroX,lastGyroY,lastGyroZ;
 
     //读取温度
     float ReadTemperature();

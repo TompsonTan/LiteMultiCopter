@@ -1,4 +1,4 @@
-﻿#include"Receiver.h"
+#include"Receiver.h"
 
 
 Receiver::Receiver()
@@ -33,10 +33,10 @@ void Receiver::ReadData()
         // 获取每个通道的信号
         ChannelData[i] = getRawChannelValue(i);
     }
-    RxAil = (ChannelData[0]-1500)/4.0;
-    RxEle = (ChannelData[1] -1500)/4.0;
+    RxAil = ChannelData[0]-1500;
+    RxEle = ChannelData[1] -1500;
     RxThr = ChannelData[2];
-    RxRud = (ChannelData[3] -1500)/4.0;
+    RxRud = ChannelData[3] -1500;
 }
 
 void Receiver::MegaPcIntISR()

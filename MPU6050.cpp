@@ -1,4 +1,4 @@
-﻿#include"Arduino.h"
+#include"Arduino.h"
 #include <Wire.h>
 #include "MPU6050.h"
 #include "MPU6050_RegistersMap.h"
@@ -8,7 +8,7 @@
 
 MPU6050::MPU6050()
 {
-    lastGyroY = 1;
+    lastGyroX = lastGyroY = lastGyroZ = 0;
 }
 
 void MPU6050::Init()
@@ -57,39 +57,29 @@ float MPU6050::ReadAccZ()
     return accel_t_gyro.value.z_accel/16384.0*9.8;
 }
 
-float MPU6050::ReadPitchAngle()
-{
-    float xtoz = ReadAccX()/9.8;
-    //float pitch = acos(xtoz)/3.14*180;
-    float pitch = ReadAccX();
-    return pitch;
-}
-
-float MPU6050::ReadRollAngle()
-{
-    float ytoz = ReadAccY()*(1/ReadAccZ());
-    float roll = atan(ytoz)/3.14*180;
-    return roll;
-}
-
 float MPU6050::ReadGyroX()
 {
-    return accel_t_gyro.value.x_gyro/131.0-1.4;
+    float GyroX = accel_t_gyro.value.x_gyro/131.0-1.4;
+    //和上一个值综合一下，防止波形的突变，起滤波作用
+    GyroX = (3*GyroX+lastGyroX)/4;
+    lastGyroX = GyroX;
+    return GyroX;
 }
 
 float MPU6050::ReadGyroY()
 {
     float GyroY = accel_t_gyro.value.y_gyro/131.0-3.5;
-    if(abs(GyroY)>abs(50*lastGyroY))
-        ;
-    else
-        lastGyroY = GyroY;
-    return lastGyroY;
+    GyroY = (3*GyroY+lastGyroY)/4;
+    lastGyroY = GyroY;
+    return GyroY;
 }
 
 float MPU6050::ReadGyroZ()
 {
-    return accel_t_gyro.value.z_gyro/131.0;
+    float GyroZ = accel_t_gyro.value.z_gyro/131.0;
+    GyroZ = (3*GyroZ+lastGyroZ)/4;
+    lastGyroZ = GyroZ;
+    return GyroZ;
 }
 
 float MPU6050::ReadTemperature()

@@ -1,4 +1,4 @@
-﻿// 不适用Arduino 1.0.1以下的版本
+// 不适用Arduino 1.0.1以下的版本
 // 因为Wire.endTransmission() 使用某个参数来使用或释放I2C总线
 
 // 参考文档:
