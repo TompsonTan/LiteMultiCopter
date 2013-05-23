@@ -1,13 +1,14 @@
+#include"def.h"
 #include"Receiver.h"
-
 
 Receiver::Receiver()
 {
-
+    RxAilCenter = RxEleCenter = RxRudCenter = 1500;
 }
 
 void Receiver::Init()
 {
+#if defined(Mega2560)
     DDRK = 0; //设置端口K为输入
     PORTK = 0;//端口K全部置零
 
@@ -19,6 +20,20 @@ void Receiver::Init()
     //使到PCINT16-23的引脚上的任何电平变化都会引起中断
     //注意：四通道，但开启了6个“引脚电平变化中断”
     PCICR |= 0x1 << 2;
+
+#elif defined(Promini)
+    DDRD &= 0b11110100;//设置端口D2、4、5、6、7为输入
+    PORTD &= ~0b11110100;//响应端口引脚全部置零
+
+    //引脚电平变化屏蔽寄存器 2 (PCMSK2)的高四位全部置为1，即：
+    //使到PCINT20、21、22、23中断使能，接收机的四个通道接到ANALOG IN的3、4、5、6引脚
+    PCMSK2 |=0xF0;
+
+    //将“引脚电平变化中断控制寄存器”的第三位（PCIE2）置为1，即：
+    //使到PCINT16-23的引脚上的任何电平变化都会引起中断
+    //注意：四通道，但开启了6个“引脚电平变化中断”
+    PCICR |= 0x1 << 2;
+#endif // defined
 
     ChannelData[0] = 1500;
     ChannelData[1] = 1500;
@@ -33,10 +48,10 @@ void Receiver::ReadData()
         // 获取每个通道的信号
         ChannelData[i] = getRawChannelValue(i);
     }
-    RxAil = ChannelData[0]-1500;
-    RxEle = ChannelData[1] -1500;
+    RxAil = ChannelData[0] - RxAilCenter;
+    RxEle = ChannelData[1] - RxEleCenter;
     RxThr = ChannelData[2];
-    RxRud = ChannelData[3] -1500;
+    RxRud = ChannelData[3] - RxRudCenter;
 }
 
 void Receiver::MegaPcIntISR()
@@ -48,7 +63,12 @@ void Receiver::MegaPcIntISR()
     uint32_t currentTime;
     uint32_t time;
 
+#if defined(Mega25060)
     curr = PINK;
+#elif defined(Promini)
+    curr = PIND;
+#endif // defined
+
     mask = curr ^ PCintLast[0];
     PCintLast[0] = curr;
 
@@ -107,4 +127,12 @@ int Receiver::getRawChannelValue(byte channel)
     SREG = oldSREG;
 
     return receiverRawValue;
+}
+
+void Receiver::Calibrate()
+{
+    RxAilCenter = ChannelData[0];
+    RxEleCenter = ChannelData[1];
+    MinValue = minRxThr = ChannelData[2];
+    RxRudCenter = ChannelData[3];
 }

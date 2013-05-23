@@ -1,6 +1,7 @@
 #include"Arduino.h"
 #include <Wire.h>
 
+#include"def.h"
 #include"MPU6050.h"
 #include"SerialCom.h"
 #include"Receiver.h"
@@ -29,13 +30,13 @@ int GyroBaseCnt=0;			//Gyro base build count 陀螺仪中点建立计数器
 //四轴锁定/解锁函数
 int InLock = 1;//初始为锁定状态
 int ArmCnt = 0;	//锁定/解锁计数
-#define ARMING_TIME 150
-#define STICKGATE 90//锁定/解锁阀值
+#define ARMING_TIME 350
+#define STICKGATE 300//锁定/解锁阀值
 int LockLED = A5;//若常亮，则为锁定；闪烁，则为已解锁
 void ArmingRoutine()
 {
     //消抖动,计数达到阀值的时候认为执行锁定或解锁
-    if(abs(LMC_Receiver.RxRud)>85)
+    if(abs(LMC_Receiver.RxRud)>STICKGATE)
         ArmCnt++;
     else
         ArmCnt = 0;
@@ -90,10 +91,21 @@ void setup()
     //设置接收机信号端口
     LMC_Receiver.Init();
 
+#if defined(Mega2560)
     pinMode(4, OUTPUT);
     pinMode(3, OUTPUT);
     pinMode(5, OUTPUT);
     pinMode(6, OUTPUT);
+#elif defined(Promini)
+    pinMode(3, OUTPUT);
+    pinMode(9, OUTPUT);
+    pinMode(10, OUTPUT);
+    pinMode(11, OUTPUT);
+#endif // defined
+
+    delay(2000);
+    LMC_Receiver.ReadData();
+    LMC_Receiver.Calibrate();
 
     pinMode(LockLED,OUTPUT);
     digitalWrite(LockLED,LOW);

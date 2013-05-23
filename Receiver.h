@@ -41,11 +41,13 @@ public:
     void ReadData();
     void MegaPcIntISR();
     int getRawChannelValue(byte channel);
+    void Calibrate();
 
     int ChannelData[4];
 
     float RxThr;//油门 1100-1900
     float RxAil,RxEle,RxRud;//副翼、升降舵、方向舵。(与1500相减后的偏差)，-400~400
+    float RxAilCenter,RxEleCenter,RxRudCenter,minRxThr;
 
     tPinTimingData pinData[9];
 

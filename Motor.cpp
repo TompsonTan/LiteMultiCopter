@@ -1,29 +1,30 @@
+#include"def.h"
 #include"Motor.h"
 
 #define MaxValue 1800
-#define MinValue 1092
 
 #include <Servo.h>
 
-PID Pitch_PID(40,30,23),Roll_PID(40,30,23),Yaw_PID(0.4,0,0);
+PID Pitch_PID(45,30,23),Roll_PID(45,30,23),Yaw_PID(85,45,0);
 
 Motor::Motor()
 {
     Pitch_Offset = Roll_Offset = Yaw_Offset = Throttle = 0;
     Front = Back = Left = Right = 0;
+    MinValue = 1092;
 }
 
 //根据传感器数据和遥控器信号计算四个电机的输出
 void Motor::CalculateOutput(MPU6050  MySensor,Receiver MyReceiver)
 {
     Throttle = MyReceiver.RxThr;
-    Pitch_Offset =Pitch_PID.Calculate(MyReceiver.RxEle,MySensor.ReadGyroY());
+    Pitch_Offset =Pitch_PID.Calculate(MyReceiver.RxEle/4,MySensor.ReadGyroY());
 
-    Roll_Offset = Roll_PID.Calculate(80*MyReceiver.RxAil/100.0,MySensor.ReadGyroX());
+    Roll_Offset = Roll_PID.Calculate(MyReceiver.RxAil/4,MySensor.ReadGyroX());
 
-    Yaw_Offset = Yaw_PID.Calculate(-70*MyReceiver.RxRud/100.0,MySensor.ReadGyroZ());
+    Yaw_Offset = Yaw_PID.Calculate(-MyReceiver.RxRud/10,MySensor.ReadGyroZ());
 
-    Roll_Offset = Yaw_Offset = 0;
+    //Roll_Offset = Yaw_Offset = 0;
 
     // 十字模式
 	//       Front
@@ -65,10 +66,17 @@ void Motor::OutPut()
 void Motor::CalibrateESCs()
 {
 //Attach pins for ESCs (sets motor orientation)
+#if defined(Mega2560)
   esc0.attach(4); //ESC 0 - Pin 11
   esc1.attach(3); //ESC 1 - Pin 10
   esc2.attach(5); //ESC 2 - Pin 13
   esc3.attach(6); //ESC 3 - Pin 12
+#elif defined(Promini)
+  esc0.attach(3); //ESC 0 - Pin 11
+  esc1.attach(9); //ESC 1 - Pin 10
+  esc2.attach(10); //ESC 2 - Pin 13
+  esc3.attach(11); //ESC 3 - Pin 12
+#endif // defined
 
   esc0.writeMicroseconds(1860);
   esc1.writeMicroseconds(1860);
