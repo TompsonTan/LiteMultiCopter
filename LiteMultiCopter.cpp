@@ -32,7 +32,12 @@ int InLock = 1;//初始为锁定状态
 int ArmCnt = 0;	//锁定/解锁计数
 #define ARMING_TIME 350
 #define STICKGATE 300//锁定/解锁阀值
-int LockLED = A5;//若常亮，则为锁定；闪烁，则为已解锁
+
+#if defined(Mega2560)
+    int LockLED = A5;//若常亮，则为锁定；闪烁，则为已解锁
+#elif defined(Promini)
+    int LockLED = 13;
+#endif // defined
 void ArmingRoutine()
 {
     //消抖动,计数达到阀值的时候认为执行锁定或解锁
@@ -151,7 +156,7 @@ void loop()
 //    Serial.print('*');//数据分隔符
 //    Serial.print(LMC_Sensor.ReadGyroY());
 //    Serial.print('*');
-//    Serial.print(LMC_Motor.Throttle);
+       Serial.println(LMC_Receiver.ChannelData[3]);
 //    Serial.print('*');
 //    Serial.print(InLock);
 //    Serial.print('*');

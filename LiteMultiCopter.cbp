@@ -651,43 +651,55 @@
 		<Compiler>
 			<Add directory="." />
 		</Compiler>
-		<Unit filename="GlobalVariables.h" />
 		<Unit filename="LiteMultiCopter.cpp">
 			<Option target="Arduino Mega 2560/ADK" />
+			<Option target="Arduino Pro Mini (328)" />
 		</Unit>
 		<Unit filename="MPU6050.cpp">
 			<Option target="Arduino Mega 2560/ADK" />
+			<Option target="Arduino Pro Mini (328)" />
 		</Unit>
 		<Unit filename="MPU6050.h">
 			<Option target="Arduino Mega 2560/ADK" />
+			<Option target="Arduino Pro Mini (328)" />
 		</Unit>
 		<Unit filename="MPU6050_RegistersMap.h">
 			<Option target="Arduino Mega 2560/ADK" />
+			<Option target="Arduino Pro Mini (328)" />
 		</Unit>
 		<Unit filename="Motor.cpp">
 			<Option target="Arduino Mega 2560/ADK" />
+			<Option target="Arduino Pro Mini (328)" />
 		</Unit>
 		<Unit filename="Motor.h">
 			<Option target="Arduino Mega 2560/ADK" />
+			<Option target="Arduino Pro Mini (328)" />
 		</Unit>
 		<Unit filename="PID.cpp">
 			<Option target="Arduino Mega 2560/ADK" />
+			<Option target="Arduino Pro Mini (328)" />
 		</Unit>
 		<Unit filename="PID.h">
 			<Option target="Arduino Mega 2560/ADK" />
+			<Option target="Arduino Pro Mini (328)" />
 		</Unit>
 		<Unit filename="Receiver.cpp">
 			<Option target="Arduino Mega 2560/ADK" />
+			<Option target="Arduino Pro Mini (328)" />
 		</Unit>
 		<Unit filename="Receiver.h">
 			<Option target="Arduino Mega 2560/ADK" />
+			<Option target="Arduino Pro Mini (328)" />
 		</Unit>
 		<Unit filename="SerialCom.cpp">
 			<Option target="Arduino Mega 2560/ADK" />
+			<Option target="Arduino Pro Mini (328)" />
 		</Unit>
 		<Unit filename="SerialCom.h">
 			<Option target="Arduino Mega 2560/ADK" />
+			<Option target="Arduino Pro Mini (328)" />
 		</Unit>
+		<Unit filename="def.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

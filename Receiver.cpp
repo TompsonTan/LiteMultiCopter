@@ -43,6 +43,7 @@ void Receiver::Init()
 
 void Receiver::ReadData()
 {
+#if defined(Mega2560)
     for(int i = 0; i < 4; i++)
     {
         // 获取每个通道的信号
@@ -52,6 +53,19 @@ void Receiver::ReadData()
     RxEle = ChannelData[1] - RxEleCenter;
     RxThr = ChannelData[2];
     RxRud = ChannelData[3] - RxRudCenter;
+#elif defined(Promini)
+    for(int i = 0; i < 4; i++)
+    {
+        // 获取每个通道的信号
+        ChannelData[i] = getRawChannelValue(i+4);
+    }
+    RxAil = ChannelData[2] - RxAilCenter;
+    RxEle = ChannelData[1] - RxEleCenter;
+    RxThr = ChannelData[3];
+    RxRud = ChannelData[0] - RxRudCenter;
+#endif // defined
+
+
 }
 
 void Receiver::MegaPcIntISR()
@@ -131,8 +145,15 @@ int Receiver::getRawChannelValue(byte channel)
 
 void Receiver::Calibrate()
 {
+#if defined(Mega2560)
     RxAilCenter = ChannelData[0];
     RxEleCenter = ChannelData[1];
     MinValue = minRxThr = ChannelData[2];
     RxRudCenter = ChannelData[3];
+#elif defined(Promini)
+    RxAilCenter = ChannelData[2];
+    RxEleCenter = ChannelData[1];
+    MinValue = minRxThr = ChannelData[3];
+    RxRudCenter = ChannelData[0];
+#endif // defined
 }

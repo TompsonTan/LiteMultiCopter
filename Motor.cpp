@@ -18,11 +18,16 @@ Motor::Motor()
 void Motor::CalculateOutput(MPU6050  MySensor,Receiver MyReceiver)
 {
     Throttle = MyReceiver.RxThr;
+
+#if defined(Mega2560)
     Pitch_Offset =Pitch_PID.Calculate(MyReceiver.RxEle/4,MySensor.ReadGyroY());
-
     Roll_Offset = Roll_PID.Calculate(MyReceiver.RxAil/4,MySensor.ReadGyroX());
-
     Yaw_Offset = Yaw_PID.Calculate(-MyReceiver.RxRud/10,MySensor.ReadGyroZ());
+#elif defined(Promini)
+    Pitch_Offset =Pitch_PID.Calculate(MyReceiver.RxEle/4,-MySensor.ReadGyroY());
+    Roll_Offset = Roll_PID.Calculate(MyReceiver.RxAil/4,-MySensor.ReadGyroX());
+    Yaw_Offset = Yaw_PID.Calculate(-MyReceiver.RxRud/10,MySensor.ReadGyroZ());
+#endif // defined
 
     //Roll_Offset = Yaw_Offset = 0;
 
