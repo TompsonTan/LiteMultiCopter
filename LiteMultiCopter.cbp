@@ -651,6 +651,8 @@
 		<Compiler>
 			<Add directory="." />
 		</Compiler>
+		<Unit filename="IMU.cpp" />
+		<Unit filename="IMU.h" />
 		<Unit filename="LiteMultiCopter.cpp">
 			<Option target="Arduino Mega 2560/ADK" />
 			<Option target="Arduino Pro Mini (328)" />
@@ -700,6 +702,13 @@
 			<Option target="Arduino Pro Mini (328)" />
 		</Unit>
 		<Unit filename="def.h" />
+		<Unit filename="lmcMath/Math.h" />
+		<Unit filename="lmcMath/Matrix33.cpp" />
+		<Unit filename="lmcMath/Matrix33.h" />
+		<Unit filename="lmcMath/Quaternion.cpp" />
+		<Unit filename="lmcMath/Quaternion.h" />
+		<Unit filename="lmcMath/Vector.cpp" />
+		<Unit filename="lmcMath/Vector.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

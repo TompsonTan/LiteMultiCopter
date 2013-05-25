@@ -52,10 +52,12 @@
 1362986950 e:\mydata\winsoftwares\installed\codeblocks\arduino\hardware\arduino\variants\mega\pins_arduino.h
 	<avr/pgmspace.h>
 
-1368626674 source:e:\development\github\litemulticopter\litemulticopter.cpp
+1369498626 source:e:\development\github\litemulticopter\litemulticopter.cpp
 	"Arduino.h"
 	<Wire.h>
+	"def.h"
 	"MPU6050.h"
+	"IMU.h"
 	"SerialCom.h"
 	"Receiver.h"
 	"Motor.h"
@@ -68,10 +70,10 @@
 	"MPU6050.h"
 	"Receiver.h"
 
-1368617034 e:\development\github\litemulticopter\receiver.h
+1368792668 e:\development\github\litemulticopter\receiver.h
 	"Arduino.h"
 
-1368439191 e:\development\github\litemulticopter\motor.h
+1368793096 e:\development\github\litemulticopter\motor.h
 	"Receiver.h"
 	"MPU6050.h"
 	"PID.h"
@@ -80,24 +82,65 @@
 1368624946 e:\development\github\litemulticopter\pid.h
 	"Arduino.h"
 
-1368626003 source:e:\development\github\litemulticopter\motor.cpp
+1369366060 source:e:\development\github\litemulticopter\motor.cpp
+	"def.h"
 	"Motor.h"
 	<Servo.h>
 
-1368625006 source:e:\development\github\litemulticopter\pid.cpp
+1368791267 source:e:\development\github\litemulticopter\pid.cpp
 	"PID.h"
 
-1368617004 source:e:\development\github\litemulticopter\receiver.cpp
+1369465366 source:e:\development\github\litemulticopter\receiver.cpp
+	"def.h"
 	"Receiver.h"
 
 1368439255 source:e:\development\github\litemulticopter\serialcom.cpp
 	"SerialCom.h"
 
-1368613224 source:e:\development\github\litemulticopter\mpu6050.cpp
+1369499007 source:e:\development\github\litemulticopter\mpu6050.cpp
 	"Arduino.h"
 	<Wire.h>
 	"MPU6050.h"
 	"MPU6050_RegistersMap.h"
 
 1368439251 e:\development\github\litemulticopter\mpu6050_registersmap.h
+
+1368793154 e:\development\github\litemulticopter\globalvariables.h
+
+1369458972 e:\development\github\litemulticopter\def.h
+
+1362986950 e:\mydata\winsoftwares\installed\codeblocks\arduino\hardware\arduino\variants\standard\pins_arduino.h
+	<avr/pgmspace.h>
+
+1369497852 source:e:\development\github\litemulticopter\imu.cpp
+	"IMU.h"
+
+1369458632 e:\development\github\litemulticopter\imu.h
+	"Arduino.h"
+	"MPU6050.h"
+	"lmcMath/Math.h"
+
+1359937356 source:e:\development\github\litemulticopter\lmcmath\matrix33.cpp
+	"Matrix33.h"
+
+1359937356 e:\development\github\litemulticopter\lmcmath\matrix33.h
+	"Vector.h"
+
+1359937356 e:\development\github\litemulticopter\lmcmath\vector.h
+	<math.h>
+
+1359937356 source:e:\development\github\litemulticopter\lmcmath\vector.cpp
+	"Vector.h"
+
+1369497277 source:e:\development\github\litemulticopter\lmcmath\quaternion.cpp
+	"Quaternion.h"
+
+1369451537 e:\development\github\litemulticopter\lmcmath\quaternion.h
+	"Vector.h"
+	"Matrix33.h"
+
+1359937356 e:\development\github\litemulticopter\lmcmath\math.h
+	"Vector.h"
+	"Matrix33.h"
+	"Quaternion.h"
 

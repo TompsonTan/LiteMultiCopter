@@ -59,7 +59,7 @@ float MPU6050::ReadAccZ()
 
 float MPU6050::ReadGyroX()
 {
-    float GyroX = accel_t_gyro.value.x_gyro/131.0-1.4;
+    float GyroX = accel_t_gyro.value.x_gyro/131.0-1.25;
     //和上一个值综合一下，防止波形的突变，起滤波作用
     GyroX = (3*GyroX+lastGyroX)/4;
     lastGyroX = GyroX;
@@ -68,7 +68,7 @@ float MPU6050::ReadGyroX()
 
 float MPU6050::ReadGyroY()
 {
-    float GyroY = accel_t_gyro.value.y_gyro/131.0-3.5;
+    float GyroY = accel_t_gyro.value.y_gyro/131.0-3.7;
     GyroY = (3*GyroY+lastGyroY)/4;
     lastGyroY = GyroY;
     return GyroY;
@@ -76,7 +76,7 @@ float MPU6050::ReadGyroY()
 
 float MPU6050::ReadGyroZ()
 {
-    float GyroZ = accel_t_gyro.value.z_gyro/131.0;
+    float GyroZ = accel_t_gyro.value.z_gyro/131.0+0.1;
     GyroZ = (3*GyroZ+lastGyroZ)/4;
     lastGyroZ = GyroZ;
     return GyroZ;

@@ -3,6 +3,7 @@
 
 #include"def.h"
 #include"MPU6050.h"
+#include"IMU.h"
 #include"SerialCom.h"
 #include"Receiver.h"
 #include"Motor.h"
@@ -11,6 +12,7 @@
 
 
 MPU6050  LMC_Sensor;//加速度/陀螺仪传感器
+IMU          LMC_IMU(&LMC_Sensor);//姿态解算
 SerialCom LMC_Com;//串口通信
 Receiver    LMC_Receiver;//接收机信号读取
 Motor       LMC_Motor;//电机控制
@@ -30,7 +32,8 @@ int GyroBaseCnt=0;			//Gyro base build count 陀螺仪中点建立计数器
 //四轴锁定/解锁函数
 int InLock = 1;//初始为锁定状态
 int ArmCnt = 0;	//锁定/解锁计数
-#define ARMING_TIME 350
+//#define ARMING_TIME 350
+#define ARMING_TIME 150
 #define STICKGATE 300//锁定/解锁阀值
 
 #if defined(Mega2560)
@@ -54,6 +57,7 @@ void ArmingRoutine()
             {
                 InLock = 0;
                 GyroBaseCnt=GYROBASECNT;
+                LMC_IMU.initialze();
             }
         }
         else
@@ -62,7 +66,6 @@ void ArmingRoutine()
                 InLock = 1;
         }
     }
-
 }
 
 bool ESC_isCalibrated = false;
@@ -126,6 +129,7 @@ void loop()
     //读取/更新接收机信号
     LMC_Receiver.ReadData();
 
+
     //将陀螺仪和接收机信号发送到串口
     //LMC_Com.DataToPC(LMC_Sensor,LMC_Receiver);
 
@@ -146,6 +150,9 @@ void loop()
     }
     else
     {
+        //IMU姿态解算
+        LMC_IMU.integrateRawGyro();
+
         digitalWrite(LockLED,HIGH);
         //输出电机控制信号
         LMC_Motor.OutPut();
@@ -156,9 +163,26 @@ void loop()
 //    Serial.print('*');//数据分隔符
 //    Serial.print(LMC_Sensor.ReadGyroY());
 //    Serial.print('*');
-       Serial.println(LMC_Receiver.ChannelData[3]);
+//    Serial.println(LMC_Receiver.ChannelData[3]);
 //    Serial.print('*');
 //    Serial.print(InLock);
+//    Serial.print('*');
+
+    Serial.print('H');//开头标记
+    Serial.print(LMC_IMU.Euler.x);
+    Serial.print('*');
+    Serial.print(LMC_IMU.Euler.y);
+    Serial.print('*');
+    Serial.print(LMC_IMU.Euler.z);
+    Serial.print('*');
+    Serial.print('\n');//结束标记
+
+//    Serial.print('H');//开头标记
+//    Serial.print(LMC_Sensor.ReadGyroX());
+//    Serial.print('*');
+//    Serial.print(LMC_Sensor.ReadGyroY());
+//    Serial.print('*');
+//    Serial.print(LMC_Sensor.ReadGyroZ());
 //    Serial.print('*');
 //    Serial.print('\n');//结束标记
 }

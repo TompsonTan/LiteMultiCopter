@@ -77,7 +77,7 @@ void Receiver::MegaPcIntISR()
     uint32_t currentTime;
     uint32_t time;
 
-#if defined(Mega25060)
+#if defined(Mega2560)
     curr = PINK;
 #elif defined(Promini)
     curr = PIND;
