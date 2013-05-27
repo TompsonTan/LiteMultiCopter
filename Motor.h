@@ -11,7 +11,7 @@ class Motor
 {
     public:
         Motor();
-        void CalculateOutput(MPU6050  MySensor,Receiver MyReceiver);
+        void CalculateOutput(float *ypr,Receiver MyReceiver);
         float MotorLimitValue(int v);
         void Lock();
         void OutPut();

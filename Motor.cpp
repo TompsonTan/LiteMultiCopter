@@ -15,14 +15,14 @@ Motor::Motor()
 }
 
 //根据传感器数据和遥控器信号计算四个电机的输出
-void Motor::CalculateOutput(MPU6050  MySensor,Receiver MyReceiver)
+void Motor::CalculateOutput(float *ypr,Receiver MyReceiver)
 {
     Throttle = MyReceiver.RxThr;
 
 #if defined(Mega2560)
-    Pitch_Offset =Pitch_PID.Calculate(MyReceiver.RxEle/4,MySensor.ReadGyroY());
-    Roll_Offset = Roll_PID.Calculate(MyReceiver.RxAil/4,MySensor.ReadGyroX());
-    Yaw_Offset = Yaw_PID.Calculate(-MyReceiver.RxRud/10,MySensor.ReadGyroZ());
+    Pitch_Offset =Pitch_PID.Calculate(MyReceiver.RxEle/4,-ypr[1] * 180/M_PI);
+    Roll_Offset = Roll_PID.Calculate(MyReceiver.RxAil/4,ypr[2] * 180/M_PI);
+    Yaw_Offset = Yaw_PID.Calculate(-MyReceiver.RxRud/10,-ypr[0] * 180/M_PI);
 #elif defined(Promini)
     Pitch_Offset =Pitch_PID.Calculate(MyReceiver.RxEle/4,-MySensor.ReadGyroY());
     Roll_Offset = Roll_PID.Calculate(MyReceiver.RxAil/4,-MySensor.ReadGyroX());

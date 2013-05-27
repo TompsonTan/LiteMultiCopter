@@ -52,18 +52,18 @@
 1362986950 e:\mydata\winsoftwares\installed\codeblocks\arduino\hardware\arduino\variants\mega\pins_arduino.h
 	<avr/pgmspace.h>
 
-1369498626 source:e:\development\github\litemulticopter\litemulticopter.cpp
+1369675820 source:e:\development\github\litemulticopter\litemulticopter.cpp
 	"Arduino.h"
 	<Wire.h>
+	"I2Cdev.h"
+	"MPU6050_6Axis_MotionApps20.h"
 	"def.h"
-	"MPU6050.h"
-	"IMU.h"
-	"SerialCom.h"
 	"Receiver.h"
 	"Motor.h"
 
-1368612848 e:\development\github\litemulticopter\mpu6050.h
-	<Wire.h>
+1369632731 e:\development\github\litemulticopter\mpu6050.h
+	"I2Cdev.h"
+	<avr/pgmspace.h>
 
 1368439212 e:\development\github\litemulticopter\serialcom.h
 	"Arduino.h"
@@ -73,7 +73,7 @@
 1368792668 e:\development\github\litemulticopter\receiver.h
 	"Arduino.h"
 
-1368793096 e:\development\github\litemulticopter\motor.h
+1369675251 e:\development\github\litemulticopter\motor.h
 	"Receiver.h"
 	"MPU6050.h"
 	"PID.h"
@@ -82,7 +82,7 @@
 1368624946 e:\development\github\litemulticopter\pid.h
 	"Arduino.h"
 
-1369366060 source:e:\development\github\litemulticopter\motor.cpp
+1369675450 source:e:\development\github\litemulticopter\motor.cpp
 	"def.h"
 	"Motor.h"
 	<Servo.h>
@@ -97,11 +97,8 @@
 1368439255 source:e:\development\github\litemulticopter\serialcom.cpp
 	"SerialCom.h"
 
-1369499007 source:e:\development\github\litemulticopter\mpu6050.cpp
-	"Arduino.h"
-	<Wire.h>
+1369632731 source:e:\development\github\litemulticopter\mpu6050.cpp
 	"MPU6050.h"
-	"MPU6050_RegistersMap.h"
 
 1368439251 e:\development\github\litemulticopter\mpu6050_registersmap.h
 
@@ -143,4 +140,21 @@
 	"Vector.h"
 	"Matrix33.h"
 	"Quaternion.h"
+
+1369647908 e:\development\github\litemulticopter\i2cdev.h
+	"WProgram.h"
+	"Arduino.h"
+	<Wire.h>
+	"ArduinoWrapper.h"
+
+1369646444 source:e:\development\github\litemulticopter\i2cdev.cpp
+	"I2Cdev.h"
+
+1369632731 e:\development\github\litemulticopter\mpu6050_6axis_motionapps20.h
+	"I2Cdev.h"
+	"helper_3dmath.h"
+	"MPU6050.h"
+	<avr/pgmspace.h>
+
+1369632731 e:\development\github\litemulticopter\helper_3dmath.h
 
