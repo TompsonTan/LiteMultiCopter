@@ -6,21 +6,22 @@
 class PID
 {
     public:
-        PID(float p, float i, float d);
+        PID();
 
+        void setPID(float p, float i, float d);
         float Calculate(float rcCommand,float gyroData);
         void resetITerm();
 
     public:
-//        long prevTime;
-//        float prevRef;
-//        float prevInput;
+        long prevTime;
+        float prevRef;
+        float prevInput;
         float pTerm;
         float iTerm;
         float dTerm;
-        int16_t Kp, Ki, Kd;
+        float Kp, Ki, Kd;
+        float error;
         int16_t errorGyroI;
-        int16_t error;
         int16_t delta,delta1,delta2,deltaSum;
         int16_t lastGyro;
 };
