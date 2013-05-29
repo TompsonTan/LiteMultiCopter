@@ -7,9 +7,9 @@
 
 Motor::Motor()
 {
-    //0.8,0,0.5;1,0,0.6
+    //目前最优1.2,0.35,0.35
     Pitch_PID.setPID(1.1,0,0.6);
-    Roll_PID.setPID(1.1,0,0.6);
+    Roll_PID.setPID(1.3,0.35,0.30);
     Yaw_PID.setPID(1.1,0,0.6);
     Pitch_Offset = Roll_Offset = Yaw_Offset = Throttle = 0;
     Front = Back = Left = Right = 0;

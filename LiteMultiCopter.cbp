@@ -690,6 +690,7 @@
 			<Option target="Arduino Mega 2560/ADK" />
 			<Option target="Arduino Pro Mini (328)" />
 		</Unit>
+		<Unit filename="Streaming.h" />
 		<Unit filename="def.h" />
 		<Unit filename="helper_3dmath.h" />
 		<Extensions>

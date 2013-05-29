@@ -15,15 +15,12 @@ class PID
     public:
         long prevTime;
         float prevRef;
-        float prevInput;
         float pTerm;
         float iTerm;
         float dTerm;
         float Kp, Ki, Kd;
         float error;
-        int16_t errorGyroI;
-        int16_t delta,delta1,delta2,deltaSum;
-        int16_t lastGyro;
+        float output;
 };
 
 #endif // PID_H

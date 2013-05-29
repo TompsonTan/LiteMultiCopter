@@ -4,6 +4,7 @@
 #include "I2Cdev.h"
 #include "MPU6050_6Axis_MotionApps20.h"
 
+#include "Streaming.h"
 #include"def.h"
 #include"Receiver.h"
 #include"Motor.h"
@@ -266,14 +267,20 @@ void loop()
 
         if(currentSerialNum == 1)
         {
-            Serial.print('H');
-            Serial.print(ypr[0] * 180/M_PI);
-            Serial.print('*');
-            Serial.print(ypr[1] * 180/M_PI);
-            Serial.print('*');
-            Serial.print(ypr[2] * 180/M_PI);
-            Serial.print('*');
-            Serial.print('\n');
+//            Serial.print('H');
+//            Serial.print(ypr[0] * 180/M_PI);
+//            Serial.print('*');
+//            Serial.print(ypr[1] * 180/M_PI);
+//            Serial.print('*');
+//            Serial.print(ypr[2] * 180/M_PI);
+//            Serial.print('*');
+//            Serial.print('\n');
+            Serial << 'H'
+            << ypr[2] * 180/M_PI << '*'
+            <<LMC_Receiver.RxAil/12<< '*'
+            <<LMC_Motor.Roll_Offset << '*'
+            <<LMC_Motor.Roll_PID.dTerm<< '*'
+            <<'\n';
             //nextSerialNum = 2;
             //currentSerialNum = 2;
         }
