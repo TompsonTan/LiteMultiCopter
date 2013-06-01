@@ -1,7 +1,8 @@
 #include"def.h"
 #include"Motor.h"
 
-#define MaxValue 1800
+//#define MaxValue 1850
+#define MaxValue 1350
 
 #include <Servo.h>
 
@@ -10,7 +11,7 @@ Motor::Motor()
     //目前最优1.2,0.35,0.35
     Pitch_PID.setPID(1.25,0.35,0.30);
     Roll_PID.setPID(1.25,0.35,0.30);
-    Yaw_PID.setPID(0.2,0,0);
+    Yaw_PID.setPID(0.4,0,0);
 
     Pitch_Offset = Roll_Offset = Yaw_Offset = Throttle = 0;
     Front = Back = Left = Right = 0;
@@ -22,21 +23,28 @@ void Motor::CalculateOutput(float yawRate,float pitchAngle,float rollAngle,Recei
 {
     Throttle = MyReceiver.RxThr;
 
-    Pitch_Offset =Pitch_PID.Calculate(MyReceiver.RxEle/8,pitchAngle);
+    Pitch_Offset = Pitch_PID.Calculate(-MyReceiver.RxEle/8,pitchAngle);
     Roll_Offset = Roll_PID.Calculate(MyReceiver.RxAil/8,rollAngle);
-    Yaw_Offset = Yaw_PID.Calculate(-MyReceiver.RxRud/10,yawRate);
+    Yaw_Offset = Yaw_PID.Calculate(-MyReceiver.RxRud/12,yawRate);
 
-    if(Throttle<1250)
-        Pitch_Offset = Roll_Offset = Yaw_Offset = 0;
+    if(Throttle<1200)
+        Yaw_Offset = 0;
+    if(abs(Yaw_Offset)>50)
+    {
+        if(Yaw_Offset>0)
+            Yaw_Offset = 50;
+        else
+            Yaw_Offset = -50;
+    }
 
     // 十字模式
 	//       Front
 	//   Left + Right
 	//       Back
-    Front = MotorLimitValue(Throttle - Pitch_Offset + Yaw_Offset);
+    Front = MotorLimitValue(Throttle + Pitch_Offset + Yaw_Offset);
     Right = MotorLimitValue(Throttle - Roll_Offset - Yaw_Offset);
     Left = MotorLimitValue(Throttle + Roll_Offset - Yaw_Offset);
-    Back = MotorLimitValue(Throttle + Pitch_Offset + Yaw_Offset);
+    Back = MotorLimitValue(Throttle - Pitch_Offset + Yaw_Offset);
 }
 
 //信号限幅

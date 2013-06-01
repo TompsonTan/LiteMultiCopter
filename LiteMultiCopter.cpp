@@ -12,14 +12,25 @@
 
 #include "FreeIMU.h"
 
+
+/*    四轴（前、左）和传感器MPU（X、Y、Z）的关系
+                     /\   X 前
+                      |
+                      |
+左                   |
+Y<-------------+   Z轴 垂直于屏幕向外为正
+
+规定：俯仰角-上仰为正，滚转角-右滚为正，偏航角-左偏为正
+遥控器信号、传感器数据与规定不一致的时候应修改正负号
+*/
+
+
 float ypr[3]; // 偏航、俯仰、滚转角度
 float val[9];
 float yawRate;//偏航角速度
 
 
-// Set the FreeIMU object
-FreeIMU my3IMU = FreeIMU();
-
+FreeIMU    myIMU = FreeIMU();//IMU惯性测量单元
 Receiver    LMC_Receiver;//接收机信号读取
 Motor       LMC_Motor;//电机控制
 
@@ -57,25 +68,14 @@ void ArmingRoutine()
             if(LMC_Receiver.RxRud>STICKGATE)//方向舵向右，解锁
             {
                 InLock = 0;
+                //解锁后重置MPU
+                myIMU.init();
             }
         }
         else
         {
             if(LMC_Receiver.RxRud<-STICKGATE)//方向舵向左，锁定
                 InLock = 1;
-        }
-    }
-}
-
-bool ESC_isCalibrated = false;
-void CalibrateThrottle()
-{
-    if(!ESC_isCalibrated)
-    {
-        if(LMC_Receiver.RxThr>85)
-        {
-            InLock = 0;
-            ESC_isCalibrated = true;
         }
     }
 }
@@ -87,9 +87,6 @@ void setup()
 
     //初始化I2C总线
     Wire.begin();
-
-    my3IMU.init();
-    delay(5);
 
     //设置接收机信号端口
     LMC_Receiver.Init();
@@ -106,7 +103,7 @@ void setup()
     pinMode(11, OUTPUT);
 #endif // defined
 
-    delay(2000);
+    delay(200);
     LMC_Receiver.ReadData();
     LMC_Receiver.Calibrate();
 
@@ -114,6 +111,9 @@ void setup()
     digitalWrite(LockLED,LOW);
 
     LMC_Motor.CalibrateESCs();
+
+    myIMU.init();
+    delay(5);
 }
 
 void loop()
@@ -127,7 +127,7 @@ void loop()
     //读取接收机信号，结果需转换后控制电机
     LMC_Motor.CalculateOutput(yawRate,ypr[1],ypr[2],LMC_Receiver);
 
-    //若已锁定或未建立陀螺仪基准，禁止电机输出
+    //若已锁定，禁止电机输出
     if(InLock)
     {
         LMC_Motor.Lock();
@@ -141,8 +141,8 @@ void loop()
     }
 
     //获取姿态角和角速度
-    my3IMU.getYawPitchRoll(ypr);
-    my3IMU.getValues(val);
+    myIMU.getYawPitchRoll(ypr);
+    myIMU.getValues(val);
     yawRate = val[5];
 
 //    Serial.print('H');//开头标记
@@ -155,14 +155,14 @@ void loop()
 //    Serial.print(InLock);
 //    Serial.print('*');
 //
-    Serial.print('H');//开头标记
-    Serial.print(ypr[0]);
-    Serial.print('*');
-    Serial.print(ypr[1]);
-    Serial.print('*');
-    Serial.print(ypr[2]);
-    Serial.print('*');
-    Serial.print(val[5]);
-    Serial.print('*');
-    Serial.print('\n');//结束标记
+//    Serial.print('H');//开头标记
+//    Serial.print(ypr[0]);
+//    Serial.print('*');
+//    Serial.print(ypr[1]);
+//    Serial.print('*');
+//    Serial.print(ypr[2]);
+//    Serial.print('*');
+//    Serial.print(val[5]);
+//    Serial.print('*');
+//    Serial.print('\n');//结束标记
 }
