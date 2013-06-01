@@ -2,7 +2,6 @@
 #define MOTOR_H
 
 #include"Receiver.h"
-#include"MPU6050.h"
 #include"PID.h"
 
 #include <Servo.h>
@@ -11,7 +10,7 @@ class Motor
 {
     public:
         Motor();
-        void CalculateOutput(float yawAngularRate,float pitchAngle,float rollAngle,Receiver MyReceiver);
+        void CalculateOutput(float yawRate,float pitchAngle,float rollAngle,Receiver MyReceiver);
         float MotorLimitValue(int v);
         void Lock();
         void OutPut();

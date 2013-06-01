@@ -8,32 +8,26 @@
 Motor::Motor()
 {
     //目前最优1.2,0.35,0.35
-    Pitch_PID.setPID(1.1,0,0.6);
-    Roll_PID.setPID(1.3,0.35,0.30);
-    Yaw_PID.setPID(1.1,0,0.6);
+    Pitch_PID.setPID(1.25,0.35,0.30);
+    Roll_PID.setPID(1.25,0.35,0.30);
+    Yaw_PID.setPID(0.2,0,0);
+
     Pitch_Offset = Roll_Offset = Yaw_Offset = Throttle = 0;
     Front = Back = Left = Right = 0;
     MinValue = 1092;
 }
 
 //根据传感器数据和遥控器信号计算四个电机的输出
-void Motor::CalculateOutput(float yawAngularRate,float pitchAngle,float rollAngle,Receiver MyReceiver)
+void Motor::CalculateOutput(float yawRate,float pitchAngle,float rollAngle,Receiver MyReceiver)
 {
     Throttle = MyReceiver.RxThr;
 
-#if defined(Mega2560)
-    //Pitch_Offset =Pitch_PID.Calculate(MyReceiver.RxEle/12,-pitchAngle* 180/M_PI);
-    Pitch_Offset = 0;
-    Roll_Offset = Roll_PID.Calculate(MyReceiver.RxAil/12,rollAngle* 180/M_PI);
-    //Yaw_Offset = Yaw_PID.Calculate(-MyReceiver.RxRud/10,-yawAngularRate * 180/M_PI);
-    Yaw_Offset = 0;
-#elif defined(Promini)
-    Pitch_Offset =Pitch_PID.Calculate(MyReceiver.RxEle/4,-MySensor.ReadGyroY());
-    Roll_Offset = Roll_PID.Calculate(MyReceiver.RxAil/4,-MySensor.ReadGyroX());
-    Yaw_Offset = Yaw_PID.Calculate(-MyReceiver.RxRud/10,MySensor.ReadGyroZ());
-#endif // defined
+    Pitch_Offset =Pitch_PID.Calculate(MyReceiver.RxEle/8,pitchAngle);
+    Roll_Offset = Roll_PID.Calculate(MyReceiver.RxAil/8,rollAngle);
+    Yaw_Offset = Yaw_PID.Calculate(-MyReceiver.RxRud/10,yawRate);
 
-    //Roll_Offset = Yaw_Offset = 0;
+    if(Throttle<1250)
+        Pitch_Offset = Roll_Offset = Yaw_Offset = 0;
 
     // 十字模式
 	//       Front
