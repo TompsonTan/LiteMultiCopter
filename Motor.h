@@ -13,6 +13,7 @@ class Motor
         void CalculateOutput(float yawRate,float pitchAngle,float rollAngle,Receiver MyReceiver);
         float MotorLimitValue(int v);
         void Lock();
+        void unLock();
         void OutPut();
         void CalibrateESCs();
 

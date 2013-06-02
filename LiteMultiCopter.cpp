@@ -52,7 +52,8 @@ int ArmCnt = 0;	//锁定/解锁计数
     int LockLED = A5;//若常亮，则为锁定；闪烁，则为已解锁
 #elif defined(Promini)
     int LockLED = 13;
-#endif // defined
+#endif
+
 void ArmingRoutine()
 {
     //消抖动,计数达到阀值的时候认为执行锁定或解锁
@@ -70,6 +71,7 @@ void ArmingRoutine()
                 InLock = 0;
                 //解锁后重置MPU
                 myIMU.init();
+                LMC_Motor.unLock();
             }
         }
         else
@@ -127,11 +129,11 @@ void loop()
     //读取接收机信号，结果需转换后控制电机
     LMC_Motor.CalculateOutput(yawRate,ypr[1],ypr[2],LMC_Receiver);
 
-    //若已锁定，禁止电机输出
     if(InLock)
     {
-        LMC_Motor.Lock();
         digitalWrite(LockLED,LOW);
+        //若已锁定，禁止电机输出
+        LMC_Motor.Lock();
     }
     else
     {

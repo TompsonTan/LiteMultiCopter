@@ -1,8 +1,7 @@
 #include"def.h"
 #include"Motor.h"
 
-//#define MaxValue 1850
-#define MaxValue 1350
+#define MaxValue 1850
 
 #include <Servo.h>
 
@@ -11,7 +10,7 @@ Motor::Motor()
     //目前最优1.2,0.35,0.35
     Pitch_PID.setPID(1.25,0.35,0.30);
     Roll_PID.setPID(1.25,0.35,0.30);
-    Yaw_PID.setPID(0.4,0,0);
+    Yaw_PID.setPID(1.0,0.02,0);
 
     Pitch_Offset = Roll_Offset = Yaw_Offset = Throttle = 0;
     Front = Back = Left = Right = 0;
@@ -25,16 +24,16 @@ void Motor::CalculateOutput(float yawRate,float pitchAngle,float rollAngle,Recei
 
     Pitch_Offset = Pitch_PID.Calculate(-MyReceiver.RxEle/8,pitchAngle);
     Roll_Offset = Roll_PID.Calculate(MyReceiver.RxAil/8,rollAngle);
-    Yaw_Offset = Yaw_PID.Calculate(-MyReceiver.RxRud/12,yawRate);
+    Yaw_Offset = Yaw_PID.Calculate(-MyReceiver.RxRud/8,yawRate);
 
     if(Throttle<1200)
         Yaw_Offset = 0;
-    if(abs(Yaw_Offset)>50)
+    if(abs(Yaw_Offset)>150)
     {
         if(Yaw_Offset>0)
-            Yaw_Offset = 50;
+            Yaw_Offset = 150;
         else
-            Yaw_Offset = -50;
+            Yaw_Offset = -150;
     }
 
     // 十字模式
@@ -60,12 +59,15 @@ float Motor::MotorLimitValue(int v)
 void Motor::Lock()
 {
     Front = Back = Left = Right = MinValue;
-    Pitch_PID.resetITerm();
-    Roll_PID.resetITerm();
-    Yaw_PID.resetITerm();
     OutPut();
 }
 
+void Motor::unLock()
+{
+    Pitch_PID.resetITerm();
+    Roll_PID.resetITerm();
+    Yaw_PID.resetITerm();
+}
 void Motor::OutPut()
 {
   esc0.writeMicroseconds(Front);
